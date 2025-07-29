@@ -1,0 +1,6 @@
+{
+  "name": "ChainRepair Mobile Management",
+  "description": "A web application to streamline mobile repair processes and enhance security through (simulated) blockchain technology for user login, payment transactions, and record management.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
