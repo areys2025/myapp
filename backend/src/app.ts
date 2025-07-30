@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import repairRoutes from './routes/repair.routes';
 import logRoutes from './routes/log.routes';
-
+import invoiceRoutes from './routes/invoiceRoutes'
 const app = express();
 
 import userRoutes from './routes/user.routes';
@@ -86,19 +86,23 @@ app.use('/api/forgot-password', forgotPassword);
 app.use('/api/feedback', feedbackroutes);
 
 
-app.use('/api/repairs/:customerId', getRepairById)
+// app.use('/api/repairs/:customerId', getRepairById)
 app.use('/api/repairs', repairRoutes);
 
-app.use('/api/invoices',createInvoice)
-app.use( '/api/invoices',getAllInvoices)
-app.use('/api/invoices/:id',getInvoiceById)
+app.use('/api/invoices',invoiceRoutes)
+// app.use( '/api/invoices',getAllInvoices)
+// app.use('/api/invoices/:id',getInvoiceById)
 app.use('/api', paymentRoutes);
-app.use('/api/repairs/:TicketId', updateRepairByTicketId);
+// app.use('/api/repairs/:TicketId', updateRepairByTicketId);
 app.put("/api/users/:id", authenticateToken, updateUserProfile);
 app.use("/api/:id/password",authenticateToken,changeUserPassword)
 
 
 app.use(express.static(path.join(__dirname, '../dist')));
+app.get('/', (req, res) => {
+  res.send('API is working!');
+});
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
