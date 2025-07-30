@@ -8,14 +8,14 @@ export const useApi = () => {
   const token = localStorage.getItem('token');
 
   const Pinstance = axios.create({
-    baseURL: 'http://localhost:5000/api/auth',
+    baseURL: 'https://myapp-ph0r.onrender.com/api/auth',
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
     },
   });
 
   const instance = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://myapp-ph0r.onrender.com/api',
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
     },
@@ -43,7 +43,7 @@ export const useApi = () => {
       }));
     },
     getPurchaseOrders: async (): Promise<PurchaseOrder[]> => {
-      const res = await axios.get('http://localhost:5000/api/purchase-orders');
+      const res = await instance.get('/purchase-orders');
       
       if (!Array.isArray(res.data)) {
         throw new Error('Expected an array of purchase orders');
@@ -69,7 +69,7 @@ export const useApi = () => {
       return res.data
     },
     getAllFeedBacks: async (): Promise<Feedback[]> => {
-      const res = await axios.get('http://localhost:5000/api/feedback');
+      const res = await instance.get('/feedback');
       if (!Array.isArray(res.data)) {
         throw new Error('Expected an array of feedbacks');
       }
@@ -126,7 +126,7 @@ export const useApi = () => {
     createExpense: (data: Omit<Expense, 'id' | 'category'>) => instance.post('/expenses', data).then(res => res.data),
 
     getAllExpenses: async (): Promise<Expense[]> => {
-      const res = await axios.get('http://localhost:5000/api/expenses');
+      const res = await instance.get('/expenses');
       if (!Array.isArray(res.data)) {
         throw new Error('Expected an array of expenses');
       }

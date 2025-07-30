@@ -44,7 +44,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   setIsLoading(true);
   try {
-    const response = await axios.post<User>('http://localhost:5000/api/auth/register', {
+    const response = await axios.post<User>('https://myapp-ph0r.onrender.com/api/auth/register', {
       name,
       email,
       password, // Backend should hash this
