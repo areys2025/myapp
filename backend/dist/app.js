@@ -38,7 +38,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // 
 // Database connection
-mongoose_1.default.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chainrepair')
+mongoose_1.default.connect(process.env.MONGODB_URI || 'mongodb+srv://chainDb:group976.@cluster0.d8gmf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 app.use('/api/suppliers', supplier_routes_1.default);
@@ -71,9 +71,6 @@ app.use('/api', paymentRoutes_1.default);
 app.put("/api/users/:id", auth_1.authenticateToken, user_routes_2.default);
 app.use("/api/:id/password", auth_1.authenticateToken, user_routes_3.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, '../dist')));
-app.get('/', (req, res) => {
-    res.send('API is working!');
-});
 app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../dist', 'index.html'));
 });
