@@ -26,7 +26,7 @@ const ExpenseList: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await axios.get<Expense[]>('http://localhost:5000/api/expenses');
+      const res = await axios.get<Expense[]>('https://myapp-ph0r.onrender.com/api/expenses');
       setExpenses(res.data);
       setFilteredExpenses(res.data); // Set initially
     } catch (err) {

@@ -22,7 +22,7 @@ const ManagementPortalPage: React.FC = () => {
   const { getDashboardData } = useApi();
 
   const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/auth',
+    baseURL: 'https://myapp-ph0r.onrender.com/api/auth',
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
     },

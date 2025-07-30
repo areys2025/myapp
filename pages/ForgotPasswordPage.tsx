@@ -24,7 +24,7 @@ const ForgotPasswordPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post<User>('http://localhost:5000/api/auth/forgot-password', { email });
+      const res = await axios.post<User>('https://myapp-ph0r.onrender.com/api/auth/forgot-password', { email });
       setMessage({
         type: 'success',
         text: res.data.message || 'Reset link sent. Please check your email.',

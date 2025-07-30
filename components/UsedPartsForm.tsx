@@ -4,7 +4,7 @@ import axios from 'axios';
 import Input from './common/Input';
 import Button from './common/Button';
 import Alert from './common/Alert';
-
+import { useApi } from '@/hooks/useApi';
 interface UsedPart {
   partName: string;
   partId: string;
@@ -24,7 +24,7 @@ const UsedPartsForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+const api=useApi()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: name === 'quantity' ? Number(value) : value }));
@@ -38,7 +38,7 @@ const UsedPartsForm: React.FC = () => {
 
     try {
    
-      await axios.post('http://localhost:5000/api/used-parts', form);
+      await axios.post('https://myapp-ph0r.onrender.com/api/used-parts', form);
       setSuccess('Part registered successfully!');
       setForm({
         partName: '',

@@ -33,7 +33,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
 
-  axios.post('http://localhost:5000/api/feedback', {
+  axios.post('https://myapp-ph0r.onrender.com/api/feedback', {
       ticketId,
       rating,
       comment,

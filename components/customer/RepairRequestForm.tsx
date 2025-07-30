@@ -8,7 +8,7 @@ import Alert from '../common/Alert';
 import Card from '../common/Card';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const API_URL = process.env.REACT_APP_API_REPAIRS || 'http://localhost:5000/api/repairs';
+const API_URL ='https://myapp-ph0r.onrender.com/api/repairs';
 
 
 interface RepairRequestFormProps {

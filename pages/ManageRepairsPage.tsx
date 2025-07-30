@@ -19,7 +19,7 @@ const ManageRepairsPage: React.FC = () => {
   const [selectedTicket, setSelectedTicket] = useState<RepairTicket | null>(null);
 
 const getTickets= async (): Promise<RepairTicket[]> => {
-    const res = await axios.get('http://localhost:5000/api/repairs');
+    const res = await axios.get('https://myapp-ph0r.onrender.com/api/repairs');
       if (!Array.isArray(res.data)) {
         throw new Error('Expected an array of expenses');
       }

@@ -18,7 +18,7 @@ const LogTable: React.FC = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/system-logs', {
+      const res = await axios.get('https://myapp-ph0r.onrender.com/api/system-logs', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

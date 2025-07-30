@@ -24,7 +24,7 @@ const RegisterAdminPage: React.FC = () => {
   const token = localStorage.getItem('token');
 
   const instance = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://myapp-ph0r.onrender.com/api',
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
     },

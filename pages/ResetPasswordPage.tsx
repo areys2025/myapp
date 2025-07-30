@@ -46,7 +46,7 @@ const ResetPasswordPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const res = await axios.post<User>(`http://localhost:5000/api/reset-password/${token}`, {
+      const res = await axios.post<User>(`https://myapp-ph0r.onrender.com/api/reset-password/${token}`, {
         password,
         confirmPassword,
       });

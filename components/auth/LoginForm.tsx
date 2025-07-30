@@ -78,7 +78,7 @@ const handleBlockchainLogin = async () => {
     const message = `Login to ${APP_NAME} - ${new Date().toISOString()}`;
     const signature = await signer.signMessage(message);
 
-    const response = await fetch('http://localhost:5000/api/auth/metamask-login', {
+    const response = await fetch('https://myapp-ph0r.onrender.com/api/auth/metamask-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ address, signature, message }),
