@@ -99,9 +99,6 @@ app.use("/api/:id/password",authenticateToken,changeUserPassword)
 
 
 app.use(express.static(path.join(__dirname, '../dist')));
-app.get('/', (req, res) => {
-  res.send('API is working!');
-});
 
 
 app.get('*', (req, res) => {
@@ -120,8 +117,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-
 
 export default app; 
