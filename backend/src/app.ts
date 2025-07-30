@@ -18,7 +18,6 @@ import getInvoiceById from './routes/expenseRoutes'
 import purchaseOrderRoutes from './routes/purchaseOrder.routes';
 
 import technicianRoutes from './routes/technician.routes'
-import updateRepair from './routes/repair.routes'
 import createInvoice from './routes/invoiceRoutes'
 import getRepairById from './routes/repair.routes'
 import updateRepairByTicketId from './routes/repair.routes'
@@ -87,7 +86,6 @@ app.use('/api/forgot-password', forgotPassword);
 app.use('/api/feedback', feedbackroutes);
 
 
-app.use('/api/repairs', updateRepair)
 app.use('/api/repairs/:customerId', getRepairById)
 app.use('/api/repairs', repairRoutes);
 

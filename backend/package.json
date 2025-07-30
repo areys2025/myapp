@@ -6,7 +6,7 @@
 "scripts": {
   "render-build": "tsc",
   "start": "node dist/app.js",
-  "dev": "nodemon src/app.ts",
+  "dev": "node src/app.ts",
   "build": "tsc",
   "test": "jest"
 },

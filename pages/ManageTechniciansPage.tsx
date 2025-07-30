@@ -98,6 +98,7 @@ const ManageTechniciansPage: React.FC = () => {
     }
   };
 
+
   const columns:any = [
     { header: <><FaUserCog className="inline mr-1" /> Name</>, accessor: 'name' as keyof Technician },
     { header: <><FaUserCheck className="inline mr-1" /> Email</>, accessor: 'email' as keyof Technician },

@@ -124,6 +124,7 @@ export const getTechnicianById = async (req: Request, res: Response) => {
 // Update technician
 export const updateTechnician = async (req: Request, res: Response) => {
   try {
+    
     const updated = await Technician.findByIdAndUpdate(
       req.params.id,
       req.body,
