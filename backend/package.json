@@ -8,7 +8,8 @@
   "start": "node dist/app.js",
   "dev": "node src/app.ts",
   "build": "tsc",
-  "test": "jest"
+  "test": "jest",
+    "deploy": "rimraf backend/dist && npm run build && move dist backend && cd backend && tsc && cd .. && git add . && git commit -m \"Update build\" && git push"
 },
   "dependencies": {
     "@types/axios": "^0.14.4",
