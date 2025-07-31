@@ -105,7 +105,7 @@ const quantity= (await api.getPurchById(id)).quantity;
         </span>
       )
     },
-    {
+  {
   header: 'Actions',
   accessor: (order: PurchaseOrder) => (
     <div className="flex gap-2">
@@ -114,14 +114,14 @@ const quantity= (await api.getPurchById(id)).quantity;
           <Button
             size="sm"
             variant="secondary"
-            onClick={() => updateStatus(order.itemId, 'Received')}
+            onClick={() => updateStatus(order.id,"Received")}
           >
             Received
           </Button>
           <Button
             size="sm"
             variant="danger"
-            onClick={() => updateStatus(order.itemId, 'Cancelled')}
+            onClick={() => updateStatus(order.id, "Cancelled")}
           >
             Cancel
           </Button>

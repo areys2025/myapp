@@ -43,7 +43,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // 
 // Database connection
-mongoose_1.default.connect(process.env.MONGODB_URI || 'mongodb+srv://chaindbs:ibraahim976.@cluster0.xkhmo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose_1.default.connect(process.env.MONGODB_URI || "mongodb+srv://chainDb:group976.@cluster0.d8gmf.mongodb.net/chainrepair?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 app.use('/api/suppliers', supplier_routes_1.default);
