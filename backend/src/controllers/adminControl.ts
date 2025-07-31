@@ -39,6 +39,7 @@ console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +wall
       password: hashedPassword,
       contactNumber,
       walletAddress,
+      deviceType:'android',
       role: UserRole.MANAGER, // you may want to update this if it's wrong
     });
 
