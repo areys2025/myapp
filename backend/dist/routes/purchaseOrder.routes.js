@@ -9,4 +9,5 @@ const router = express_1.default.Router();
 router.post('/', purchaseOrder_controller_1.createPurchaseOrder);
 router.get('/', purchaseOrder_controller_1.getAllPurchaseOrders);
 router.put('/:id', purchaseOrder_controller_1.updatePurchaseOrder);
+router.get('/:id', purchaseOrder_controller_1.getPurchaseOrderById);
 exports.default = router;

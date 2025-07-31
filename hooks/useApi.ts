@@ -42,6 +42,17 @@ export const useApi = () => {
         supplier: item.supplier,
       }));
     },
+    updatePurchaseOrder: async (id: string, updates: Partial<PurchaseOrder>): Promise<PurchaseOrder> => {
+      console.log(id)
+      const response = await instance.put<PurchaseOrder>(`/purchase-orders/${id}`, updates);
+      return response.data;
+    },
+
+  getPurchById: async (id: string): Promise<PurchaseOrder> => {
+    const order:any= await instance.get(`/purchase-orders/${id}`);
+      return order.data
+    },
+
     getPurchaseOrders: async (): Promise<PurchaseOrder[]> => {
       const res = await instance.get('/purchase-orders');
       
@@ -53,6 +64,7 @@ export const useApi = () => {
         itemName: order.itemName,
         quantity: order.quantity,
         supplier: order.supplier,
+        purchInvId:order.purchInvId,
         orderDate: order.orderDate,
         expectedDeliveryDate: order.expectedDeliveryDate,
         totalCost: order.totalCost,
@@ -64,6 +76,7 @@ export const useApi = () => {
 updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled') => {
   return await instance.patch(`/api/purchase-orders/${itemId}/status`, { status });
 },
+
 
     getRepairs: async (): Promise<RepairTicket[]> => {
       const res = await instance.get('/repairs');

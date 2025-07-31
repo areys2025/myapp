@@ -21,23 +21,13 @@ const PurchaseOrderList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-const updateStatus = async (orderId: string, newStatus: 'Received' | 'Cancelled') => {
-  try {
-    await api.updatePurchaseOrderStatus(orderId, newStatus);
-    fetchData(); // Refresh orders after update
-  } catch (err) {
-    setError(err instanceof Error ? err.message : 'Failed to update order status.');
-  }
-};
-
-
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const [fetchedOrders, fetchedItems] = await Promise.all([
         api.getPurchaseOrders(),
-        api.getInventoryItems()
+        api.getInventoryItems(),
       ]);
       setOrders(fetchedOrders);
       setFilteredOrders(fetchedOrders); // Initial state
@@ -49,6 +39,24 @@ const updateStatus = async (orderId: string, newStatus: 'Received' | 'Cancelled'
     }
   }, [api]);
 
+  let updates: Partial<PurchaseOrder> 
+      
+
+const updateStatus = async (id: string, stFrom:any) => {
+const purchInvId= (await api.getPurchById(id)).purchInvId; 
+const quantity= (await api.getPurchById(id)).quantity; 
+ updates= { 
+        status:stFrom ,
+      purchInvId,       
+      quantity
+      };        
+      try {
+    await api.updatePurchaseOrder(id, updates);
+    fetchData(); // Refresh orders after update
+  } catch (err) {
+    setError(err instanceof Error ? err.message : 'Failed to update order status.');
+  }
+};
   useEffect(() => {
     fetchData();
   }, []);

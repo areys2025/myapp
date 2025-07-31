@@ -112,6 +112,7 @@ export interface PurchaseOrder {
   itemId: string; // this is required!
   itemName: string;
   quantity: number;
+  purchInvId:string,
   orderDate: string;
   expectedDeliveryDate: string;  
   status: 'Pending' | 'Delivered' | 'Cancelled';

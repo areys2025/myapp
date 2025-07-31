@@ -24,7 +24,6 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ inventoryItems, o
   console.log(selectedItem)
 useEffect(() => {
   if (selectedItem) {  
-
     setSupplier(selectedItem.supplier || '');
     const nextWeek = new Date();
     nextWeek.setDate(nextWeek.getDate() + 7);
@@ -56,13 +55,12 @@ useEffect(() => {
       setError('Supplier name is required.');
       return;
     }
-console.log(selectedItem)
     setIsLoading(true);
     try {
       const orderData: Omit<any, 'id'> = {
         itemId,
         itemName: selectedItem.name,
-        purchInvId:selectedItem.id,
+        purchInvId:itemId,
         quantity: numQuantity,
 
         orderDate: new Date().toISOString(),
