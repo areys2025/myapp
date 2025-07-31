@@ -43,8 +43,6 @@ dotenv.config();
 
 
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 // Middleware
 app.use(cors());
@@ -86,14 +84,14 @@ app.use('/api/forgot-password', forgotPassword);
 app.use('/api/feedback', feedbackroutes);
 
 
-// app.use('/api/repairs/:customerId', getRepairById)
+app.use('/api/repairs/:customerId', getRepairById)
 app.use('/api/repairs', repairRoutes);
 
 app.use('/api/invoices',invoiceRoutes)
-// app.use( '/api/invoices',getAllInvoices)
-// app.use('/api/invoices/:id',getInvoiceById)
+app.use( '/api/invoices',getAllInvoices)
+app.use('/api/invoices/:id',getInvoiceById)
 app.use('/api', paymentRoutes);
-// app.use('/api/repairs/:TicketId', updateRepairByTicketId);
+app.use('/api/repairs/:TicketId', updateRepairByTicketId);
 app.put("/api/users/:id", authenticateToken, updateUserProfile);
 app.use("/api/:id/password",authenticateToken,changeUserPassword)
 

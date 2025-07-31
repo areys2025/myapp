@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import Admin from '../models/Admin';
 import { logEvent } from '../config/logEvent';
 export const registerAdmin = async (req: Request, res: Response) => {
+  
   try {
     const {
       name,
@@ -16,7 +17,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
       walletAddress,
       availability,
     } = req.body;
-
+console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +walletAddress +" , "+availability)
     // Validation
     if (!name || !email || !password || !confirmPassword || !contactNumber || !walletAddress  || availability) {
       return res.status(400).json({ message: 'All fields are required' });

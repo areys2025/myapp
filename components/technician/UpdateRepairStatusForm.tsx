@@ -8,7 +8,6 @@ interface UpdateRepairStatusFormProps {
   ticket: RepairTicket;
   onSuccess: () => void;
 }
-const API_URL =  'https://myapp-ph0r.onrender.com/api/repairs';
 
 const api = useApi();
 

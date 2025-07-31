@@ -41,7 +41,7 @@ const handleWaafiPayment = async () => {
   try {
 const number = user?.contactNumber?.toString() || '';
 await payByWaafiPays({
-  phone: "252619003907",
+  phone: number,
   amount: 0.001,
   invoiceId: '7896504',
   description: 'Test USD',

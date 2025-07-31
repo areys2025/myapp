@@ -37,9 +37,8 @@ const RegisterAdminPage: React.FC = () => {
   name,
   email,
   password,
-  confirmPassword, // ✅ needed to match backend
+  confirmPassword, 
   contactNumber,
-  deviceType,
   walletAddress,
 };
 

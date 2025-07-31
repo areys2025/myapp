@@ -86,7 +86,7 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
             specialization,
             walletAddress,
             availability,
-            role: UserRole.MANAGER, // or ADMIN — based on your system
+            role: UserRole.MANAGER, 
             ...(password && { password }),
             ...(confirmPassword && { confirmPassword }),
             LoginfoEml, LoginfoRle,
@@ -104,7 +104,6 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                 createdAdmin = await api.createdAdmin(adminData); // <-- FIXED
                 console.log(createdAdmin.contactNumber);
                 setSuccess(`Admin "${createdAdmin?.name || 'Unnamed'}" created.`);
-
 
                 setSuccess(`Registration successful! Welcome, ${createdAdmin.name}.`);
             }

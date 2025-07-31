@@ -51,18 +51,15 @@ const ManagementPortalPage: React.FC = () => {
       minute: "2-digit",
     });
   };
-
-
   useEffect(() => {
+    console.log(user?.contactNumber)
     const fetchDashboardData = async () => {
       try {
         // Get dashboard overview data
         const data = await getDashboardData();
         setDashboardData(data);
-
         const repairResponse: RepairTicket[] = await api.getRepairs();
         if (!Array.isArray(repairResponse)) throw new Error('Expected array of repair tickets');
-
         const allRepairs: RepairTicket[] = repairResponse;
 
         // setInvoices(allRepairs.filter(t => t.cost && t.cost > 0));

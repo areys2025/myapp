@@ -21,8 +21,7 @@ export interface User {
   role: UserRole;
   walletAddress?: string; // For simulated blockchain login
   message?: string;
-    contactNumber: string;
-
+  contactNumber: string;
 }
 export interface allData extends User , Customer{
 

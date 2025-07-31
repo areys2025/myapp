@@ -16,8 +16,12 @@ const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const dashboard_routes_1 = __importDefault(require("./routes/dashboard.routes"));
 const auth_1 = require("./middleware/auth");
 const inventory_routes_1 = __importDefault(require("./routes/inventory.routes"));
+const invoiceRoutes_2 = __importDefault(require("./routes/invoiceRoutes"));
+const expenseRoutes_1 = __importDefault(require("./routes/expenseRoutes"));
 const purchaseOrder_routes_1 = __importDefault(require("./routes/purchaseOrder.routes"));
 const technician_routes_1 = __importDefault(require("./routes/technician.routes"));
+const repair_routes_2 = __importDefault(require("./routes/repair.routes"));
+const repair_routes_3 = __importDefault(require("./routes/repair.routes"));
 const user_routes_2 = __importDefault(require("./routes/user.routes"));
 const user_routes_3 = __importDefault(require("./routes/user.routes"));
 const paymentRoutes_1 = __importDefault(require("./routes/paymentRoutes"));
@@ -30,7 +34,7 @@ const usedParts_routes_1 = __importDefault(require("./routes/usedParts.routes"))
 const admin_routes_3 = __importDefault(require("./routes/admin.routes"));
 const supplier_routes_1 = __importDefault(require("./routes/supplier.routes"));
 const feedback_routes_1 = __importDefault(require("./routes/feedback.routes"));
-const expenseRoutes_1 = __importDefault(require("./routes/expenseRoutes"));
+const expenseRoutes_2 = __importDefault(require("./routes/expenseRoutes"));
 dotenv_1.default.config();
 const path_1 = __importDefault(require("path"));
 // Middleware
@@ -56,18 +60,18 @@ app.use('/api/regisadmin/:id', adminControl_1.updateAdmin);
 app.use('/api/regisadmin', auth_1.authenticateToken, admin_routes_3.default);
 app.use('/api/inventory', inventory_routes_1.default);
 app.use('/api/used-parts', usedParts_routes_1.default);
-app.use('/api/expenses', expenseRoutes_1.default);
+app.use('/api/expenses', expenseRoutes_2.default);
 app.use('/api/purchase-orders', purchaseOrder_routes_1.default);
 app.use('/api/purchase-orders', purchaseOrder_routes_1.default);
 app.use('/api/forgot-password', user_routes_4.default);
 app.use('/api/feedback', feedback_routes_1.default);
-// app.use('/api/repairs/:customerId', getRepairById)
+app.use('/api/repairs/:customerId', repair_routes_2.default);
 app.use('/api/repairs', repair_routes_1.default);
 app.use('/api/invoices', invoiceRoutes_1.default);
-// app.use( '/api/invoices',getAllInvoices)
-// app.use('/api/invoices/:id',getInvoiceById)
+app.use('/api/invoices', invoiceRoutes_2.default);
+app.use('/api/invoices/:id', expenseRoutes_1.default);
 app.use('/api', paymentRoutes_1.default);
-// app.use('/api/repairs/:TicketId', updateRepairByTicketId);
+app.use('/api/repairs/:TicketId', repair_routes_3.default);
 app.put("/api/users/:id", auth_1.authenticateToken, user_routes_2.default);
 app.use("/api/:id/password", auth_1.authenticateToken, user_routes_3.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, '../dist')));
