@@ -9,7 +9,7 @@ const generateItemId_1 = require("../config/generateItemId");
 const createPurchaseOrder = async (req, res) => {
     try {
         const id = await (0, generateItemId_1.getNextItemId)();
-        const { itemName, quantity, orderDate, expectedDeliveryDate, status, supplier, totalCost } = req.body;
+        const { itemName, quantity, purchInvId, orderDate, expectedDeliveryDate, status, supplier, totalCost } = req.body;
         if (!itemName || !quantity || !orderDate || !expectedDeliveryDate || !supplier || !totalCost) {
             return res.status(400).json({ message: 'All required fields must be provided.' });
         }
@@ -17,6 +17,7 @@ const createPurchaseOrder = async (req, res) => {
             itemId: id,
             itemName,
             quantity,
+            purchInvId,
             orderDate,
             expectedDeliveryDate,
             status: status || 'Pending',

@@ -5,7 +5,7 @@ import { getNextItemId } from '../config/generateItemId';
 export const createPurchaseOrder = async (req: Request, res: Response) => {
   try {
     const id = await getNextItemId();
-    const { itemName, quantity, orderDate, expectedDeliveryDate, status, supplier, totalCost } = req.body;
+    const { itemName, quantity,purchInvId, orderDate, expectedDeliveryDate, status, supplier, totalCost } = req.body;
 
     if (!itemName || !quantity || !orderDate || !expectedDeliveryDate || !supplier || !totalCost) {
       return res.status(400).json({ message: 'All required fields must be provided.' });
@@ -15,6 +15,7 @@ export const createPurchaseOrder = async (req: Request, res: Response) => {
       itemId: id,
       itemName,
       quantity,
+      purchInvId,
       orderDate,
       expectedDeliveryDate,
       status: status || 'Pending',

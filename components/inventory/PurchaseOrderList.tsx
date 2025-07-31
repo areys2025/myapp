@@ -21,6 +21,16 @@ const PurchaseOrderList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
+const updateStatus = async (orderId: string, newStatus: 'Received' | 'Cancelled') => {
+  try {
+    await api.updatePurchaseOrderStatus(orderId, newStatus);
+    fetchData(); // Refresh orders after update
+  } catch (err) {
+    setError(err instanceof Error ? err.message : 'Failed to update order status.');
+  }
+};
+
+
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -86,7 +96,34 @@ const PurchaseOrderList: React.FC = () => {
           {order.status}
         </span>
       )
-    }
+    },
+    {
+  header: 'Actions',
+  accessor: (order: PurchaseOrder) => (
+    <div className="flex gap-2">
+      {order.status === 'Pending' && (
+        <>
+          <Button
+          size="icon"
+            variant="default"
+            onClick={() => updateStatus(order.itemId, 'Received')}
+          >
+            Mark as Received
+          </Button>
+          <Button
+             size="icon"
+            variant='default'
+            onClick={() => updateStatus(order.itemId, 'Cancelled')}
+          >
+            Cancel
+          </Button>
+        </>
+      )}
+      {order.status !== 'Pending' && <span className="text-gray-400 text-xs">No actions</span>}
+    </div>
+  )
+}
+
   ];
 
   if (isLoading && orders.length === 0) return <Spinner />;

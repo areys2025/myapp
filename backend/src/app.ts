@@ -78,7 +78,6 @@ app.use('/api/expenses', expenseRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);
 
 
-app.use('/api/purchase-orders', purchaseOrderRoutes);
 
 app.use('/api/forgot-password', forgotPassword);
 app.use('/api/feedback', feedbackroutes);

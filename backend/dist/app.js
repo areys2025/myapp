@@ -62,7 +62,6 @@ app.use('/api/inventory', inventory_routes_1.default);
 app.use('/api/used-parts', usedParts_routes_1.default);
 app.use('/api/expenses', expenseRoutes_2.default);
 app.use('/api/purchase-orders', purchaseOrder_routes_1.default);
-app.use('/api/purchase-orders', purchaseOrder_routes_1.default);
 app.use('/api/forgot-password', user_routes_4.default);
 app.use('/api/feedback', feedback_routes_1.default);
 app.use('/api/repairs/:customerId', repair_routes_2.default);

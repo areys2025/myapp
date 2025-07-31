@@ -26,7 +26,7 @@ export const useApi = () => {
       return res.data;
     },
 
-    createPurchaseOrder: (data: Omit<PurchaseOrder, 'id' | 'itemName'>) => instance.post('/purchase-orders', data).then(res => res.data),
+    createPurchaseOrder: (data: Omit<any, 'id' | 'itemName'>) => instance.post('/purchase-orders', data).then(res => res.data),
 
     getInventoryItems: async (): Promise<InventoryItem[]> => {
       const res:any = await instance.get('/inventory');
@@ -60,6 +60,10 @@ export const useApi = () => {
         itemId: order.itemId
       }));
     },
+// Inside useApi.ts or corresponding API service
+updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled') => {
+  return await axios.patch(`/api/purchase-orders/${itemId}/status`, { status });
+},
 
     getRepairs: async (): Promise<RepairTicket[]> => {
       const res = await instance.get('/repairs');

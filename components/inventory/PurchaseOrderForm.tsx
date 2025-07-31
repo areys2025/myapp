@@ -59,10 +59,12 @@ useEffect(() => {
 console.log(selectedItem)
     setIsLoading(true);
     try {
-      const orderData: Omit<PurchaseOrder, 'id'> = {
+      const orderData: Omit<any, 'id'> = {
         itemId,
         itemName: selectedItem.name,
+        purchInvId:selectedItem.id,
         quantity: numQuantity,
+
         orderDate: new Date().toISOString(),
         expectedDeliveryDate,
         status: 'Pending',
