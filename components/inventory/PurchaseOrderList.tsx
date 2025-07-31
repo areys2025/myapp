@@ -134,7 +134,7 @@ const updateStatus = async (orderId: string, newStatus: 'Received' | 'Cancelled'
       title="Purchase Orders"
       className="mt-6"
       footer={
-        <Button onClick={openAddModal} disabled={inventoryItems.length === 0}>
+        <Button onClick={openAddModal} >
           Create New Purchase Order
         </Button>
       }
