@@ -104,15 +104,15 @@ const updateStatus = async (orderId: string, newStatus: 'Received' | 'Cancelled'
       {order.status === 'Pending' && (
         <>
           <Button
-          size="icon"
-            variant="default"
+            size="sm"
+            variant="secondary"
             onClick={() => updateStatus(order.itemId, 'Received')}
           >
-            Mark as Received
+            Received
           </Button>
           <Button
-             size="icon"
-            variant='default'
+            size="sm"
+            variant="danger"
             onClick={() => updateStatus(order.itemId, 'Cancelled')}
           >
             Cancel
