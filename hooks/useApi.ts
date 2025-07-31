@@ -62,7 +62,7 @@ export const useApi = () => {
     },
 // Inside useApi.ts or corresponding API service
 updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled') => {
-  return await axios.patch(`/api/purchase-orders/${itemId}/status`, { status });
+  return await instance.patch(`/api/purchase-orders/${itemId}/status`, { status });
 },
 
     getRepairs: async (): Promise<RepairTicket[]> => {

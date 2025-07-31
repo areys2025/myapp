@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes';
 import repairRoutes from './routes/repair.routes';
 import logRoutes from './routes/log.routes';
 import invoiceRoutes from './routes/invoiceRoutes'
+import PurchaseOrder from './models/PurchaseOrder';
 const app = express();
 
 import userRoutes from './routes/user.routes';
@@ -92,6 +93,18 @@ app.use('/api', paymentRoutes);
 app.use('/api/repairs/:TicketId', updateRepairByTicketId);
 app.put("/api/users/:id", authenticateToken, updateUserProfile);
 app.use("/api/:id/password",authenticateToken,changeUserPassword)
+
+// Express example
+app.patch('/api/purchase-orders/:itemId/status', async (req, res) => {
+  const { itemId } = req.params;
+  const { status } = req.body;
+  try {
+    const updated = await PurchaseOrder.findOneAndUpdate({ itemId }, { status }, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update status.' });
+  }
+});
 
 
 app.use(express.static(path.join(__dirname, '../dist')));

@@ -11,6 +11,7 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const repair_routes_1 = __importDefault(require("./routes/repair.routes"));
 const log_routes_1 = __importDefault(require("./routes/log.routes"));
 const invoiceRoutes_1 = __importDefault(require("./routes/invoiceRoutes"));
+const PurchaseOrder_1 = __importDefault(require("./models/PurchaseOrder"));
 const app = (0, express_1.default)();
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const dashboard_routes_1 = __importDefault(require("./routes/dashboard.routes"));
@@ -73,6 +74,18 @@ app.use('/api', paymentRoutes_1.default);
 app.use('/api/repairs/:TicketId', repair_routes_3.default);
 app.put("/api/users/:id", auth_1.authenticateToken, user_routes_2.default);
 app.use("/api/:id/password", auth_1.authenticateToken, user_routes_3.default);
+// Express example
+app.patch('/api/purchase-orders/:itemId/status', async (req, res) => {
+    const { itemId } = req.params;
+    const { status } = req.body;
+    try {
+        const updated = await PurchaseOrder_1.default.findOneAndUpdate({ itemId }, { status }, { new: true });
+        res.json(updated);
+    }
+    catch (err) {
+        res.status(500).json({ error: 'Failed to update status.' });
+    }
+});
 app.use(express_1.default.static(path_1.default.join(__dirname, '../dist')));
 app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../dist', 'index.html'));
