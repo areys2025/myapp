@@ -1,10 +1,10 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+// src/components/UsedPartsForm.tsx
+import React, { useState } from 'react';
+import axios from 'axios';
+import Input from './common/Input';
 import Button from './common/Button';
-import Input, { Select } from './common/Input';
 import Alert from './common/Alert';
 import { useApi } from '@/hooks/useApi';
-import { InventoryItem } from '../types'; // ensure path correct
-
 interface UsedPart {
   partName: string;
   partId: string;
@@ -13,12 +13,7 @@ interface UsedPart {
   notes?: string;
 }
 
-interface UsedPartsFormProps {
-  inventoryItems: InventoryItem[];
-  onSuccess?: () => void;
-}
-
-const UsedPartsForm: React.FC<UsedPartsFormProps> = ({ inventoryItems, onSuccess }) => {
+const UsedPartsForm: React.FC = () => {
   const [form, setForm] = useState<UsedPart>({
     partName: '',
     partId: '',
@@ -29,55 +24,20 @@ const UsedPartsForm: React.FC<UsedPartsFormProps> = ({ inventoryItems, onSuccess
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const api = useApi();
-
-  // Find selected item from inventory list when partId updates:
-const selectedItem = Array.isArray(inventoryItems)
-  ? inventoryItems.find(item => item._id === form.partId)
-  : undefined;
-
-  useEffect(() => {
-    if (selectedItem) {
-      setForm(prev => ({
-        ...prev,
-        partName: selectedItem.name,
-        partId: selectedItem._id,
-      }));
-    } else {
-      setForm(prev => ({ ...prev, partName: '', partId: '' }));
-    }
-  }, [form.partId, selectedItem]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+const api=useApi()
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: name === 'quantity' ? Number(value) : value,
-    }));
+    setForm(prev => ({ ...prev, [name]: name === 'quantity' ? Number(value) : value }));
   };
-
-  const itemOptions = inventoryItems.map(item => ({
-    label: `${item.name} (${item._id})`,
-    value: item._id,
-  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
-    if (!form.partId || !form.partName) {
-      setError('Please select a valid part from the list.');
-      return;
-    }
-
-    if (isNaN(form.quantity) || form.quantity < 1) {
-      setError('Quantity must be at least 1.');
-      return;
-    }
-
     setIsLoading(true);
+
     try {
+   
       await axios.post('https://myapp-ph0r.onrender.com/api/used-parts', form);
       setSuccess('Part registered successfully!');
       setForm({
@@ -87,8 +47,8 @@ const selectedItem = Array.isArray(inventoryItems)
         workOrderId: '',
         notes: '',
       });
-      if (onSuccess) onSuccess();
     } catch (err: any) {
+      console.error(err);
       setError(err.response?.data?.message || 'Error registering part.');
     } finally {
       setIsLoading(false);
@@ -103,25 +63,22 @@ const selectedItem = Array.isArray(inventoryItems)
       {success && <Alert type="success" message={success} />}
 
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <Select
-          id="partId"
-          name="partId"
-          label="Select Part"
-          value={form.partId}
-          onChange={(e) => setForm(prev => ({ ...prev, partId: e.target.value }))}
-          options={itemOptions}
-          required
-          disabled={isLoading}
-        />
-
         <Input
           id="partName"
           name="partName"
           label="Part Name"
+          required
           value={form.partName}
-          readOnly
+          onChange={handleChange}
         />
-
+        <Input
+          id="partId"
+          name="partId"
+          label="Part ID"
+          required
+          value={form.partId}
+          onChange={handleChange}
+        />
         <Input
           id="quantity"
           name="quantity"
@@ -131,18 +88,14 @@ const selectedItem = Array.isArray(inventoryItems)
           required
           value={form.quantity}
           onChange={handleChange}
-          disabled={isLoading}
         />
-
         <Input
           id="workOrderId"
           name="workOrderId"
           label="Work Order ID"
           value={form.workOrderId}
           onChange={handleChange}
-          disabled={isLoading}
         />
-
         <div>
           <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
             Notes (optional)
@@ -155,16 +108,10 @@ const selectedItem = Array.isArray(inventoryItems)
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Add any relevant notes..."
-            disabled={isLoading}
           />
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          isLoading={isLoading}
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
           Submit
         </Button>
       </form>
