@@ -134,7 +134,6 @@ const selectedItem = form.partId
           value={form.partName}
           readOnly
         />
-
         <Input
           id="quantity"
           name="quantity"

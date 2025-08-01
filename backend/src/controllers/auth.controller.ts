@@ -5,6 +5,8 @@ import User, { UserRole } from '../models/user.model';
 import { ethers } from 'ethers';
 import Technicain from '../models/Technicain';
 import { logEvent } from '../config/logEvent';
+
+
 // Helper function to format user response based on role
 const formatUserResponse = (user: any, token: string) => {
   // Base user data that all roles share
@@ -56,45 +58,56 @@ const formatUserResponse = (user: any, token: string) => {
   }
 };
 
+
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    // Find user by email
+    if (!email || !password) {
+      res.status(400).json({ message: 'Email and password are required' });
+      return;
+    }
+
     const user = await User.findOne({ email: email.toLowerCase() });
+
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
- else if(user){
-    await logEvent(
-  ' User login',
-  email,
-  user?.role,
-  { userInfo: user.id, name: user.name }
-);
- }
-    // Verify password
+
+    // Reject login if the user is a MetaMask-only user
+    if (!user.password) {
+      res.status(403).json({ message: 'This user is registered with MetaMask. Please sign in using MetaMask.' });
+      return;
+    }
+
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    // Generate JWT token
+    // Optional: Log login event
+    await logEvent(
+      'User login',
+      email,
+      user.role,
+      { userInfo: user.id, name: user.name }
+    );
+
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' }
     );
 
-    // Send formatted response with role-specific data
-    res.json(formatUserResponse(user, token));
+    res.status(200).json(formatUserResponse(user, token));
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -110,8 +123,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       availability 
     } = req.body;
 
-
-    // Check if user already exists
+    // Check if user already exists (by email or walletAddress)
     const existingUser = await User.findOne({ 
       $or: [
         { email: email.toLowerCase() },
@@ -124,46 +136,58 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // At least one of password or walletAddress must be provided
+    if (!password && !walletAddress) {
+      res.status(400).json({ message: 'Either password or wallet address is required for registration' });
+      return;
+    }
 
-    // Create new user with role-specific fields
-    const userData = {
+    // Hash the password if provided
+    let hashedPassword = '';
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
+
+    // Prepare user data
+    const userData: any = {
       email: email.toLowerCase(),
       password: hashedPassword,
       name,
       role,
       walletAddress,
-      ...(role === UserRole.CUSTOMER ? { 
-        contactNumber: contactNumber || '',
-        deviceType: deviceType || ''
-      } : {}),
-      ...(role === UserRole.TECHNICIAN ? { 
-        specialization, 
-        availability: availability !== undefined ? availability : true 
-      } : {})
     };
+
+    if (role === UserRole.CUSTOMER) {
+      userData.contactNumber = contactNumber || '';
+      userData.deviceType = deviceType || '';
+    }
+
+    if (role === UserRole.TECHNICIAN) {
+      userData.specialization = specialization || '';
+      userData.availability = availability !== undefined ? availability : true;
+    }
 
     const user = new User(userData);
     await user.save();
 
-    // Generate JWT token
+    // Generate JWT
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' }
     );
 
-    // Send formatted response with role-specific data
+    // Respond
     res.status(201).json(formatUserResponse(user, token));
+    
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ 
       message: error instanceof Error ? error.message : 'Registration failed' 
     });
   }
-}; 
+};
 
 export const getTechnicians = async (req: Request, res: Response): Promise<void> => {
   try {

@@ -84,25 +84,29 @@ const formatUserResponse = (user, token) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // Find user by email
+        if (!email || !password) {
+            res.status(400).json({ message: 'Email and password are required' });
+            return;
+        }
         const user = await user_model_1.default.findOne({ email: email.toLowerCase() });
         if (!user) {
             res.status(401).json({ message: 'Invalid credentials' });
             return;
         }
-        else if (user) {
-            await (0, logEvent_1.logEvent)(' User login', email, user === null || user === void 0 ? void 0 : user.role, { userInfo: user.id, name: user.name });
+        // Reject login if the user is a MetaMask-only user
+        if (!user.password) {
+            res.status(403).json({ message: 'This user is registered with MetaMask. Please sign in using MetaMask.' });
+            return;
         }
-        // Verify password
         const isValidPassword = await bcryptjs_1.default.compare(password, user.password);
         if (!isValidPassword) {
             res.status(401).json({ message: 'Invalid credentials' });
             return;
         }
-        // Generate JWT token
+        // Optional: Log login event
+        await (0, logEvent_1.logEvent)('User login', email, user.role, { userInfo: user.id, name: user.name });
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'your_jwt_secret_key_here', { expiresIn: '24h' });
-        // Send formatted response with role-specific data
-        res.json(formatUserResponse(user, token));
+        res.status(200).json(formatUserResponse(user, token));
     }
     catch (error) {
         console.error('Login error:', error);
@@ -113,7 +117,7 @@ exports.login = login;
 const register = async (req, res) => {
     try {
         const { email, password, name, role, walletAddress, contactNumber, deviceType, specialization, availability } = req.body;
-        // Check if user already exists
+        // Check if user already exists (by email or walletAddress)
         const existingUser = await user_model_1.default.findOne({
             $or: [
                 { email: email.toLowerCase() },
@@ -124,24 +128,38 @@ const register = async (req, res) => {
             res.status(400).json({ message: 'User already exists with this email or wallet address' });
             return;
         }
-        // Hash password
-        const salt = await bcryptjs_1.default.genSalt(10);
-        const hashedPassword = await bcryptjs_1.default.hash(password, salt);
-        // Create new user with role-specific fields
-        const userData = Object.assign(Object.assign({ email: email.toLowerCase(), password: hashedPassword, name,
+        // At least one of password or walletAddress must be provided
+        if (!password && !walletAddress) {
+            res.status(400).json({ message: 'Either password or wallet address is required for registration' });
+            return;
+        }
+        // Hash the password if provided
+        let hashedPassword = '';
+        if (password) {
+            const salt = await bcryptjs_1.default.genSalt(10);
+            hashedPassword = await bcryptjs_1.default.hash(password, salt);
+        }
+        // Prepare user data
+        const userData = {
+            email: email.toLowerCase(),
+            password: hashedPassword,
+            name,
             role,
-            walletAddress }, (role === user_model_1.UserRole.CUSTOMER ? {
-            contactNumber: contactNumber || '',
-            deviceType: deviceType || ''
-        } : {})), (role === user_model_1.UserRole.TECHNICIAN ? {
-            specialization,
-            availability: availability !== undefined ? availability : true
-        } : {}));
+            walletAddress,
+        };
+        if (role === user_model_1.UserRole.CUSTOMER) {
+            userData.contactNumber = contactNumber || '';
+            userData.deviceType = deviceType || '';
+        }
+        if (role === user_model_1.UserRole.TECHNICIAN) {
+            userData.specialization = specialization || '';
+            userData.availability = availability !== undefined ? availability : true;
+        }
         const user = new user_model_1.default(userData);
         await user.save();
-        // Generate JWT token
+        // Generate JWT
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'your_jwt_secret_key_here', { expiresIn: '24h' });
-        // Send formatted response with role-specific data
+        // Respond
         res.status(201).json(formatUserResponse(user, token));
     }
     catch (error) {
