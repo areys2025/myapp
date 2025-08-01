@@ -40,6 +40,16 @@ import supplierRoutes from './routes/supplier.routes';
 
 import feedbackroutes from './routes/feedback.routes';
 import expenseRoutes from './routes/expenseRoutes';
+
+
+import deleteAdmin  from './routes/admin.routes';
+
+
+
+
+
+
+
 dotenv.config();
 
 
@@ -93,6 +103,9 @@ app.use('/api', paymentRoutes);
 app.use('/api/repairs/:TicketId', updateRepairByTicketId);
 app.put("/api/users/:id", authenticateToken, updateUserProfile);
 app.use("/api/:id/password",authenticateToken,changeUserPassword)
+
+
+
 
 // Express example
 app.patch('/api/purchase-orders/:itemId/status', async (req, res) => {
