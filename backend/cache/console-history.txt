@@ -1,0 +1,9 @@
+console.log(lock.address);
+lock = await ethers.getContractAt("Lock", "0x5FbbD2315678afecb367f032d93F642f64180aa3");
+console.log(lock.address);
+lock = await ethers.getContractAt("Lock", "0x5FbbD2315678afecb367f032d93F642f64180aa3");
+console.log(lock.address);
+const lock = await ethers.getContractAt("Lock", "0x5FbbD2315678afecb367f032d93F642f64180aa3");
+(await ethers.provider.getBalance(lock.address)).toString()
+(await lock.unlockTime()).toString()
+const lock = await ethers.getContractAt("Lock", "0x5FbbD2315678afecb367f032d93F642f64180aa3");
