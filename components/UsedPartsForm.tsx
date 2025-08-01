@@ -29,15 +29,26 @@ const UsedPartsForm: React.FC<UsedPartsFormProps> = ({ onSuccess }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-    const [inventoryItems, setInventoryItems] = useState<any>();
+const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
 
   const api = useApi();
-    setInventoryItems(api.getInventoryItems())
 
   // Find selected item from inventory list when partId updates:
-  const selectedItem = inventoryItems.map((item:any) => item._id === form.partId);
+const selectedItem = form.partId
+  ? inventoryItems.find(item => item._id === form.partId)
+  : undefined;
 
   useEffect(() => {
+  const fetchInventory = async () => {
+    try {
+      const items = await api.getInventoryItems(); // assuming it returns a Promise
+      setInventoryItems(items);
+    } catch (err) {
+      console.error('Failed to load inventory:', err);
+    }
+  };
+
+  fetchInventory();
     if (selectedItem) {
       setForm(prev => ({
         ...prev,
