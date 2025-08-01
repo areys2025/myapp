@@ -298,9 +298,7 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
       if (!Array.isArray(response.data)) {
         throw new Error('Expected an array of invoice repair tickets');
       }
-
       return response.data.map((ticket: any) => ({
-
         id: ticket._id,
         TicketId: ticket.TicketId,
         deviceInfo: ticket.deviceInfo,
