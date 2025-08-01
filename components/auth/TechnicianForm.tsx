@@ -40,7 +40,7 @@ const TechnicianForm: React.FC<TechnicianFormProps> = ({ currentTechnician, onSu
   const api = useApi();
 
   useEffect(() => {
-    console.log(contactNumber)
+    // console.log(contactNumber)
     if (currentTechnician) {
       setName(currentTechnician.name || '');
       setEmail(currentTechnician.email || '');

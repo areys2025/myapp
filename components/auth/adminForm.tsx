@@ -102,7 +102,7 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                 setSuccess("Admin updated successfully.");
             } else {
                 createdAdmin = await api.createdAdmin(adminData); // <-- FIXED
-                console.log(createdAdmin.contactNumber);
+                // console.log(createdAdmin.contactNumber);
                 setSuccess(`Admin "${createdAdmin?.name || 'Unnamed'}" created.`);
 
                 setSuccess(`Registration successful! Welcome, ${createdAdmin.name}.`);

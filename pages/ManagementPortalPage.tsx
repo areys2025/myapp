@@ -52,7 +52,7 @@ const ManagementPortalPage: React.FC = () => {
     });
   };
   useEffect(() => {
-    console.log(user?.contactNumber)
+    // console.log(user?.contactNumber)
     const fetchDashboardData = async () => {
       try {
         // Get dashboard overview data
