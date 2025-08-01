@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdminAvailability = exports.deleteAdmin = exports.updateAdmin = exports.getAllAdmins = exports.registerAdmin = void 0;
+exports.deleteAdmin = exports.updateAdmin = exports.getAllAdmins = exports.registerAdmin = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_model_1 = __importStar(require("../models/user.model"));
 const Admin_1 = __importDefault(require("../models/Admin"));
@@ -44,9 +44,9 @@ const logEvent_1 = require("../config/logEvent");
 const registerAdmin = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, contactNumber, walletAddress, availability, } = req.body;
-        console.log(name + " , " + email + " , " + password + " , " + contactNumber + " , " + walletAddress + " , " + availability);
+        console.log(name + " , " + email + " , " + password + " , " + contactNumber + " , " + walletAddress);
         // Validation
-        if (!name || !email || !password || !confirmPassword || !contactNumber || !walletAddress || availability) {
+        if (!name || !email || !password || !confirmPassword || !contactNumber || !walletAddress) {
             return res.status(400).json({ message: 'All fields are required' });
         }
         if (password !== confirmPassword) {
@@ -76,7 +76,7 @@ const registerAdmin = async (req, res) => {
             deviceType: 'android',
             walletAddress,
             role: user_model_1.UserRole.MANAGER,
-            availability,
+            // availability,
         });
         if (admin) {
             await (0, logEvent_1.logEvent)('Admin deleted', req.body.LoginfoEml, req.body.LoginfoRle, { deletedAdminId: admin.id });
@@ -135,17 +135,19 @@ const deleteAdmin = async (req, res) => {
     }
 };
 exports.deleteAdmin = deleteAdmin;
-const updateAdminAvailability = async (req, res) => {
-    try {
-        const { availability } = req.body;
-        const technician = await user_model_1.default.findOneAndUpdate({ _id: req.params.id, role: user_model_1.UserRole.TECHNICIAN }, { availability }, { new: true }).select('-password');
-        if (!technician) {
-            return res.status(404).json({ message: 'Technician not found' });
-        }
-        res.json(technician);
-    }
-    catch (error) {
-        res.status(400).json({ message: 'Error updating technician availability' });
-    }
-};
-exports.updateAdminAvailability = updateAdminAvailability;
+// export const updateAdminAvailability = async (req: Request, res: Response) => {
+//   try {
+//     const { availability } = req.body;
+//     const technician = await User.findOneAndUpdate(
+//       { _id: req.params.id, role: UserRole.TECHNICIAN },
+//       { availability },
+//       { new: true }
+//     ).select('-password');
+//     if (!technician) {
+//       return res.status(404).json({ message: 'Technician not found' });
+//     }
+//     res.json(technician);
+//   } catch (error) {
+//     res.status(400).json({ message: 'Error updating technician availability' });
+//   }
+// }; 

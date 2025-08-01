@@ -17,9 +17,9 @@ export const registerAdmin = async (req: Request, res: Response) => {
       walletAddress,
       availability,
     } = req.body;
-console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +walletAddress +" , "+availability)
+console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +walletAddress)
     // Validation
-    if (!name || !email || !password || !confirmPassword || !contactNumber || !walletAddress  || availability) {
+    if (!name || !email || !password || !confirmPassword || !contactNumber || !walletAddress) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -55,7 +55,7 @@ console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +wall
       deviceType:'android',
       walletAddress,
       role: UserRole.MANAGER,
-      availability,
+      // availability,
     });
     
 if(admin){
@@ -132,20 +132,20 @@ export const deleteAdmin = async (req: Request, res: Response) => {
 };
 
 
-export const updateAdminAvailability = async (req: Request, res: Response) => {
-  try {
-    const { availability } = req.body;
-    const technician = await User.findOneAndUpdate(
-      { _id: req.params.id, role: UserRole.TECHNICIAN },
-      { availability },
-      { new: true }
-    ).select('-password');
+// export const updateAdminAvailability = async (req: Request, res: Response) => {
+//   try {
+//     const { availability } = req.body;
+//     const technician = await User.findOneAndUpdate(
+//       { _id: req.params.id, role: UserRole.TECHNICIAN },
+//       { availability },
+//       { new: true }
+//     ).select('-password');
     
-    if (!technician) {
-      return res.status(404).json({ message: 'Technician not found' });
-    }
-    res.json(technician);
-  } catch (error) {
-    res.status(400).json({ message: 'Error updating technician availability' });
-  }
-}; 
+//     if (!technician) {
+//       return res.status(404).json({ message: 'Technician not found' });
+//     }
+//     res.json(technician);
+//   } catch (error) {
+//     res.status(400).json({ message: 'Error updating technician availability' });
+//   }
+// }; 

@@ -42,7 +42,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   try {
     if (!password || !confirmPassword) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res.status(400).json({ message: 'a' });
     }
 
     if (password !== confirmPassword) {

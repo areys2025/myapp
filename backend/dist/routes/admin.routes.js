@@ -7,5 +7,5 @@ router.post('/', adminControl_1.registerAdmin);
 router.get('/', adminControl_1.getAllAdmins);
 router.get('/:id', adminControl_1.updateAdmin);
 router.delete('/:id', adminControl_1.deleteAdmin);
-router.patch('/:id/availability', adminControl_1.updateAdminAvailability);
+// router.patch('/:id/availability', updateAdminAvailability);
 exports.default = router;
