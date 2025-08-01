@@ -44,7 +44,7 @@ var UserRole;
 const adminSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    availability: { type: String, required: true },
+    // availability: { type: String, required: true },
     password: { type: String, required: true },
     contactNumber: { type: String, required: true },
     walletAddress: { type: String, required: true },

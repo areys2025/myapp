@@ -7,7 +7,7 @@ export enum UserRole {
 export interface Admin extends Document {
   name: string;
   email: string;
-  availability: { type: String, required: true },
+  // availability: { type: String, required: true },
 
   password: string;
   contactNumber: string;
@@ -19,7 +19,7 @@ export interface Admin extends Document {
 const adminSchema = new Schema<Admin>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  availability: { type: String, required: true },
+  // availability: { type: String, required: true },
 
   password: { type: String, required: true },
   contactNumber: { type: String, required: true },
