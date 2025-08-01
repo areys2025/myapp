@@ -37,9 +37,9 @@ const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
 const selectedItem = form.partId
   ? inventoryItems.find(item => item._id === form.partId)
   : undefined;
-
   useEffect(() => {
   const fetchInventory = async () => {
+   console.log(inventoryItems)
     try {
       const items = await api.getInventoryItems(); // assuming it returns a Promise
       setInventoryItems(items);
@@ -116,17 +116,17 @@ const selectedItem = form.partId
       {success && <Alert type="success" message={success} />}
 
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <Select
-          id="partId"
-          name="partId"
-          label="Select Part"
-          value={form.partId}
+  
+  <Select
+        label="Select Part"
+        id="itemId"
+        value={form.partId}
           onChange={(e) => setForm(prev => ({ ...prev, partId: e.target.value }))}
-          options={itemOptions}
-          required
-          disabled={isLoading}
-        />
-
+        options={itemOptions}
+        placeholder="Select an item"
+        required
+        disabled={isLoading}
+      />
         <Input
           id="partName"
           name="partName"
