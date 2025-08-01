@@ -1,14 +1,12 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { UserRole , User } from '../../types';
+import { UserRole, User } from '../../types';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Alert from '../common/Alert';
 import { APP_NAME } from '../../constants';
 import axios from 'axios';
-
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -17,77 +15,87 @@ const RegisterForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [deviceType, setDeviceType] = useState('');
-  const [walletAddress, setwalletAddress] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
 
   const role = 'Customer';
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setError(null);
-  setSuccess(null);
+  const validateEmail = (email: string): boolean =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  if (password !== confirmPassword) {
-    setError("Passwords do not match.");
-    return;
-  }
-  if (password.length < 6) {
-    setError("Password must be at least 6 characters long.");
-    return;
-  }
+  const validatePhoneNumber = (number: string): boolean =>
+    /^\+?[0-9\s\-]{7,15}$/.test(number);
 
-  setIsLoading(true);
-  try {
-    const response = await axios.post<User>('https://myapp-ph0r.onrender.com/api/auth/register', {
-      name,
-      email,
-      password, // Backend should hash this
-      contactNumber,
-      deviceType,
-      walletAddress,
-      role
-    });
+  const validateWalletAddress = (address: string): boolean =>
+    /^0x[a-fA-F0-9]{40}$/.test(address);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
-  const newCustomer: User = {
-    id: response.data.id,
-    name: response.data.name,
-    email: response.data.email,
-    contactNumber: response.data.email,
-
-    role: response.data.role,
-    walletAddress: response.data.walletAddress,
-  };
-
-
-    login({
-      id: newCustomer.id,
-      name: newCustomer.name,
-      email: newCustomer.email,
-      contactNumber: newCustomer.email,
-
-      role: UserRole.CUSTOMER,
-      walletAddress: newCustomer.walletAddress,
+    // Client-side validation
+    if (!validateEmail(email)) {
+      return setError("Please enter a valid email address.");
     }
-  );
 
-    setSuccess(`Registration successful! Welcome, ${response.data}. Redirecting to dashboard...`);
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 2000);
-  } catch (err: any) {
-    setError(err.response?.data?.message || "Registration failed. Please try again.");
-  } finally {
-    setIsLoading(false);
-  }
-};
+    if (!validatePhoneNumber(contactNumber)) {
+      return setError("Invalid contact number format.");
+    }
 
+    if (!validateWalletAddress(walletAddress)) {
+      return setError("Invalid wallet address format.");
+    }
+
+    if (password !== confirmPassword) {
+      return setError("Passwords do not match.");
+    }
+
+    if (password.length < 6) {
+      return setError("Password must be at least 6 characters long.");
+    }
+
+    if (!deviceType.trim()) {
+      return setError("Device type is required.");
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post<User>('https://myapp-ph0r.onrender.com/api/auth/register', {
+        name,
+        email,
+        password,
+        contactNumber,
+        deviceType,
+        walletAddress,
+        role
+      });
+
+      const newCustomer = response.data;
+
+      login({
+        id: newCustomer.id,
+        name: newCustomer.name,
+        email: newCustomer.email,
+        contactNumber: newCustomer.contactNumber,
+        role: UserRole.CUSTOMER,
+        walletAddress: newCustomer.walletAddress,
+      });
+
+      setSuccess(`Registration successful! Welcome, ${newCustomer.name}. Redirecting...`);
+      setTimeout(() => navigate('/dashboard'), 2000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-secondary-light py-12 px-4 sm:px-6 lg:px-8">
@@ -96,89 +104,33 @@ const handleSubmit = async (e: React.FormEvent) => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-neutral-dark">
             Create an Account for {APP_NAME}
           </h2>
-           <p className="mt-2 text-center text-sm text-neutral-DEFAULT">
+          <p className="mt-2 text-center text-sm text-neutral-DEFAULT">
             All new registrations are for Customer role.
           </p>
         </div>
-        
+
         {error && <Alert type="error" message={error} onClose={() => setError(null)} className="mb-4" />}
         {success && <Alert type="success" message={success} className="mb-4" />}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <Input
-            id="name"
-            label="Full Name"
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="John Doe"
-          />
-          <Input
-            id="email"
-            label="Email address"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="user@example.com"
-          />
-          <Input
-            id="password"
-            label="Password"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Min. 6 characters"
-          />
-          <Input
-            id="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            required
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Re-type your password"
-          />
-          <Input
-            id="contactNumber"
-            label="Contact Number"
-            type="tel"
-            required
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            placeholder="e.g., 555-123-4567"
-          />
-          <Input
-            id="deviceType"
-            label="Primary Device Type"
-            type="text"
-            required
-            value={deviceType}
-            onChange={(e) => setDeviceType(e.target.value)}
-            placeholder="e.g., iPhone 14 Pro, Samsung Galaxy S23"
-          />
-         <Input
-            id="deviceType"
-            label="wallet Address"
-            type="text"
-            required
-            value={walletAddress}
-            onChange={(e) => setwalletAddress(e.target.value)}
-            placeholder="0x123customer4568"
-          />
+          <Input id="name" label="Full Name" type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+          <Input id="email" label="Email address" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input id="password" label="Password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input id="confirmPassword" label="Confirm Password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          <Input id="contactNumber" label="Contact Number" type="tel" required value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
+          <Input id="deviceType" label="Device Type" type="text" required value={deviceType} onChange={(e) => setDeviceType(e.target.value)} />
+          <Input id="walletAddress" label="Wallet Address" type="text" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
           <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading || !!success}>
             Register
           </Button>
         </form>
+
         <p className="mt-4 text-center text-sm text-neutral-DEFAULT">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-primary hover:text-primary-dark">
-              Sign in here
-            </Link>
-          </p>
+          Already have an account?{' '}
+          <Link to="/login" className="font-medium text-primary hover:text-primary-dark">
+            Sign in here
+          </Link>
+        </p>
       </div>
     </div>
   );

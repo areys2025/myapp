@@ -15,6 +15,7 @@ interface AdminFormProps {
 const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
     const { user } = useAuth();
     const isEditMode = Boolean(currentAdmin);
+
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -34,7 +35,6 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
     const api = useApi();
 
     useEffect(() => {
-
         if (currentAdmin) {
             setId(currentAdmin.id);
             setName(currentAdmin.name || '');
@@ -58,20 +58,29 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
         }
     }, [currentAdmin]);
 
+    const validate = (): string | null => {
+        if (!name || name.length < 3) return 'Name must be at least 3 characters.';
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Invalid email format.';
+        if (!contactNumber || !/^\d{7,}$/.test(contactNumber)) return 'Contact number must be at least 7 digits.';
+        if (!walletAddress) return 'Wallet address is required.';
+
+        if (!isEditMode || password) {
+            if (password.length < 6) return 'Password must be at least 6 characters.';
+            if (password !== confirmPassword) return 'Passwords do not match.';
+        }
+
+        return null; // No validation errors
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setSuccess(null);
 
-        if (!isEditMode || password) {
-            if (password !== confirmPassword) {
-                setError("Passwords do not match.");
-                return;
-            }
-            if (password.length < 6) {
-                setError("Password must be at least 6 characters long.");
-                return;
-            }
+        const validationError = validate();
+        if (validationError) {
+            setError(validationError);
+            return;
         }
 
         setIsLoading(true);
@@ -86,33 +95,24 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
             specialization,
             walletAddress,
             availability,
-            role: UserRole.MANAGER, 
+            role: UserRole.MANAGER,
             ...(password && { password }),
             ...(confirmPassword && { confirmPassword }),
-            LoginfoEml, LoginfoRle,
+            LoginfoEml,
+            LoginfoRle,
         };
 
-        console.log("Sending Admin data:", adminData);
-
         try {
-            let createdAdmin;
-
             if (isEditMode) {
-                await api.updateAdmin(currentAdmin!.id, adminData); // <-- FIXED
-                setSuccess("Admin updated successfully.");
+                await api.updateAdmin(currentAdmin!.id, adminData);
+                setSuccess('Admin updated successfully.');
             } else {
-                createdAdmin = await api.createdAdmin(adminData); // <-- FIXED
-                // console.log(createdAdmin.contactNumber);
-                setSuccess(`Admin "${createdAdmin?.name || 'Unnamed'}" created.`);
-
+                const createdAdmin = await api.createdAdmin(adminData);
                 setSuccess(`Registration successful! Welcome, ${createdAdmin.name}.`);
+                setTimeout(() => navigate('/dashboard'), 2000);
             }
 
             onSuccess();
-
-            if (!isEditMode) {
-                setTimeout(() => navigate('/dashboard'), 2000);
-            }
         } catch (err: any) {
             setError(err.response?.data?.message || 'Something went wrong.');
         } finally {
@@ -133,12 +133,30 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                 <Input id="name" label="Full Name" required value={name} onChange={(e) => setName(e.target.value)} />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input id="email" label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <Input id="contactNumber" label="Contact Number" required value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
-                    {/* <Input id="deviceType" label="Device Type" required value={deviceType} onChange={(e) => setDeviceType(e.target.value)} placeholder="e.g., MacBook Pro" /> */}
-                           <Input id="walletAddress" label="Wallet Address" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
+                    <Input
+                        id="email"
+                        label="Email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                        id="contactNumber"
+                        label="Contact Number"
+                        required
+                        value={contactNumber}
+                        onChange={(e) => setContactNumber(e.target.value)}
+                    />
+                    <Input
+                        id="walletAddress"
+                        label="Wallet Address"
+                        required
+                        value={walletAddress}
+                        onChange={(e) => setWalletAddress(e.target.value)}
+                    />
 
-                    <div className="flex items-center">
+                    <div className="flex items-center mt-1">
                         <input
                             id="availability"
                             type="checkbox"
@@ -146,15 +164,17 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                             onChange={(e) => setAvailability(e.target.checked)}
                             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                         />
-                        <label htmlFor="availability" className="ml-2 block text-sm text-gray-900">
+                        <label htmlFor="availability" className="ml-2 text-sm text-gray-900">
                             Available
                         </label>
-                    </div> <Input
+                    </div>
+
+                    <Input
                         id="password"
                         label="Password"
                         type="password"
                         required={!isEditMode}
-                        placeholder={isEditMode ? "Leave blank to keep current" : ""}
+                        placeholder={isEditMode ? 'Leave blank to keep current' : ''}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -165,8 +185,7 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                         required={!isEditMode}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                    />  
-            
+                    />
                 </div>
 
                 <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>

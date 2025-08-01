@@ -94,12 +94,10 @@ const fetchSuppliers = useCallback(async () => {
       setIsLoading(true);
       if (currentItem?._id) {
         api.updateInventory(currentItem._id,payload)
-        // await axios.put(`http://localhost:5000/api/inventory/${currentItem._id}`, payload);
       } else {
         console.log('Sending payload:', payload);
         api.storeInv(payload)
 
-        // await axios.post('http://localhost:5000/api/inventory', payload);
       }
       onSuccess();
     } catch (err: any) {
