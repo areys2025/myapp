@@ -32,7 +32,9 @@ const UsedPartsForm: React.FC<UsedPartsFormProps> = ({ inventoryItems, onSuccess
   const api = useApi();
 
   // Find selected item from inventory list when partId updates:
-  const selectedItem = inventoryItems.find(item => item._id === form.partId);
+const selectedItem = Array.isArray(inventoryItems)
+  ? inventoryItems.find(item => item._id === form.partId)
+  : undefined;
 
   useEffect(() => {
     if (selectedItem) {
