@@ -73,6 +73,7 @@ const registerAdmin = async (req, res) => {
             email,
             password: hashedPassword,
             contactNumber,
+            deviceType: 'android',
             walletAddress,
             role: user_model_1.UserRole.MANAGER,
             availability,

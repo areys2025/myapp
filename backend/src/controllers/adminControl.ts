@@ -52,6 +52,7 @@ console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +wall
       email,
       password: hashedPassword,
       contactNumber,
+      deviceType:'android',
       walletAddress,
       role: UserRole.MANAGER,
       availability,
