@@ -68,10 +68,7 @@ const selectedItem = form.partId
     }));
   };
 
-  const itemOptions = inventoryItems.map((item:any) => ({
-    label: `${item.name} (${item._id})`,
-    value: item._id,
-  }));
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,7 +104,10 @@ const selectedItem = form.partId
       setIsLoading(false);
     }
   };
-
+  const itemOptions = inventoryItems.map((item:any) => ({
+    label: `${item.name} (${item._id})`,
+    value: item._id,
+  }));
   return (
     <div className="max-w-lg w-full mx-auto bg-white p-10 rounded-xl shadow-2xl space-y-6">
       <h2 className="text-2xl font-bold text-gray-800 text-center">Register Used Part</h2>
