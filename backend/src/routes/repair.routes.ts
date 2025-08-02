@@ -1,27 +1,26 @@
 import express from 'express';
-import {
-  createRepair,
-  getRepairTickets,
-  updateRepair,
-  getRepairById,
-  updateRepairByTicketId,
-  getRepairTicketsForTech,
-} from '../controllers/repair.controller';
-
+const router = express.Router();
 import { authenticateToken } from '../middleware/auth';
 
-const router = express.Router();
+import { createRepair, getRepairTickets,updateRepair,getRepairById ,updateRepairByTicketId } from '../controllers/repair.controller';
+import { getRepairTicketsForTech } from '../controllers/repair.controller';
+
+router.post('/', createRepair);
+router.get('/', getRepairTickets);
+
+router.get('/', updateRepairByTicketId);
 
 router.post('/', authenticateToken, createRepair);
 
-router.get('/', authenticateToken, getRepairTickets);
+// router.post('/', createRepair);
+router.get('/',authenticateToken, getRepairTickets);
+router.put("/:_id", authenticateToken, updateRepair) // expects a MongoDB ObjectId
+// router.put('/:TicketId', updateRepairByTicketId);
 
 router.get('/:customerId', getRepairById);
 
-router.get('/filter/technician', getRepairTicketsForTech);
 
-router.put('/:_id', authenticateToken, updateRepair);
+router.get('/', getRepairTicketsForTech);
 
-router.put('/ticket/:_id', authenticateToken, updateRepairByTicketId);
 
-export default router;
+export default router; 

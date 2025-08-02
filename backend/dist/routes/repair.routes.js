@@ -4,13 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const repair_controller_1 = require("../controllers/repair.controller");
-const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
+const auth_1 = require("../middleware/auth");
+const repair_controller_1 = require("../controllers/repair.controller");
+const repair_controller_2 = require("../controllers/repair.controller");
+router.post('/', repair_controller_1.createRepair);
+router.get('/', repair_controller_1.getRepairTickets);
+router.get('/', repair_controller_1.updateRepairByTicketId);
 router.post('/', auth_1.authenticateToken, repair_controller_1.createRepair);
+// router.post('/', createRepair);
 router.get('/', auth_1.authenticateToken, repair_controller_1.getRepairTickets);
+router.put("/:_id", auth_1.authenticateToken, repair_controller_1.updateRepair); // expects a MongoDB ObjectId
+// router.put('/:TicketId', updateRepairByTicketId);
 router.get('/:customerId', repair_controller_1.getRepairById);
-router.get('/filter/technician', repair_controller_1.getRepairTicketsForTech);
-router.put('/:_id', auth_1.authenticateToken, repair_controller_1.updateRepair);
-router.put('/ticket/:_id', auth_1.authenticateToken, repair_controller_1.updateRepairByTicketId);
+router.get('/', repair_controller_2.getRepairTicketsForTech);
 exports.default = router;

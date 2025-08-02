@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import repairRoutes from './routes/repair.routes';
+import getRepairById from './routes/repair.routes'
+import updateRepairByTicketId from './routes/repair.routes'
+
 import logRoutes from './routes/log.routes';
 import invoiceRoutes from './routes/invoiceRoutes'
 import PurchaseOrder from './models/PurchaseOrder';
@@ -20,8 +23,6 @@ import purchaseOrderRoutes from './routes/purchaseOrder.routes';
 
 import technicianRoutes from './routes/technician.routes'
 import createInvoice from './routes/invoiceRoutes'
-import getRepairById from './routes/repair.routes'
-import updateRepairByTicketId from './routes/repair.routes'
 import updateUserProfile from './routes/user.routes';
 import changeUserPassword  from './routes/user.routes';
 import paymentRoutes from './routes/paymentRoutes';
@@ -34,7 +35,6 @@ import {updateAdmin} from './controllers/adminControl';
 import forgotPassword from './routes/user.routes';
 import usedPartsRoutes from './routes/usedParts.routes';
 import adminRoutes from './routes/admin.routes';
-import techRoutes from './routes/technician.routes';
 import supplierRoutes from './routes/supplier.routes';
 
 
@@ -45,7 +45,6 @@ import expenseRoutes from './routes/expenseRoutes';
 
 
 
-import updateRepair from './routes/repair.routes'
 
 
 
