@@ -2,6 +2,28 @@ import { Request, Response } from 'express';
 import invoicesItem from '../models/invoiceModel'; '../models/invoiceModel';
 import expenses from '../models/expenseModel';
 
+
+import { sendInvoiceEmail } from '../config/sendInvoiceEmail';
+
+export const createInvoice = async (req: Request, res: Response) => {
+  try {
+    const invoiceData = req.body;
+
+    // Create and save invoice to DB
+    const newInvoice = await invoicesItem.create(invoiceData);
+
+    // Send invoice email if customer email is present
+    if (invoiceData?.customer?.email) {
+      await sendInvoiceEmail(invoiceData.customer.email, newInvoice);
+    }
+
+    res.status(201).json(newInvoice);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Error creating invoice' });
+  }
+};
+
 export const getAllInvoices = async (req: Request, res: Response) => {
   try {
     const invoices = await invoicesItem.find({
@@ -24,17 +46,6 @@ export const getAllExpenses = async (_req: Request, res: Response) => {
   }
 };
 
-// create new invoice
-export const createInvoice = async (req: Request, res: Response) => {
-  try {
-    const invoicesItems = await invoicesItem.create({
-      ...req.body
-    });
-    res.status(201).json(invoicesItems);
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating invoice request' });
-  }
-};
 
 
 // Get invoice by ID

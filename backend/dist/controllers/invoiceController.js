@@ -3,10 +3,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvoiceById = exports.createInvoice = exports.getAllExpenses = exports.getAllInvoices = void 0;
+exports.getInvoiceById = exports.getAllExpenses = exports.getAllInvoices = exports.createInvoice = void 0;
 const invoiceModel_1 = __importDefault(require("../models/invoiceModel"));
 '../models/invoiceModel';
 const expenseModel_1 = __importDefault(require("../models/expenseModel"));
+const sendInvoiceEmail_1 = require("../config/sendInvoiceEmail");
+const createInvoice = async (req, res) => {
+    var _a;
+    try {
+        const invoiceData = req.body;
+        // Create and save invoice to DB
+        const newInvoice = await invoiceModel_1.default.create(invoiceData);
+        // Send invoice email if customer email is present
+        if ((_a = invoiceData === null || invoiceData === void 0 ? void 0 : invoiceData.customer) === null || _a === void 0 ? void 0 : _a.email) {
+            await (0, sendInvoiceEmail_1.sendInvoiceEmail)(invoiceData.customer.email, newInvoice);
+        }
+        res.status(201).json(newInvoice);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Error creating invoice' });
+    }
+};
+exports.createInvoice = createInvoice;
 const getAllInvoices = async (req, res) => {
     try {
         const invoices = await invoiceModel_1.default.find({
@@ -30,17 +49,6 @@ const getAllExpenses = async (_req, res) => {
     }
 };
 exports.getAllExpenses = getAllExpenses;
-// create new invoice
-const createInvoice = async (req, res) => {
-    try {
-        const invoicesItems = await invoiceModel_1.default.create(Object.assign({}, req.body));
-        res.status(201).json(invoicesItems);
-    }
-    catch (error) {
-        res.status(400).json({ message: 'Error creating invoice request' });
-    }
-};
-exports.createInvoice = createInvoice;
 // Get invoice by ID
 const getInvoiceById = async (req, res) => {
     try {

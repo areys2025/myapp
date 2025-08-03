@@ -45,14 +45,21 @@ const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({ isOpen, onClose, in
     }
   };
 
-  const handleEmailInvoice = async () => {
-    try {
-      await instance.post(`/invoices/${invoice.id}/send`);
-      alert('Invoice sent to customer!');
-    } catch (err: any) {
-      alert(err?.response?.data?.message || 'Failed to send invoice.');
-    }
-  };
+const handleEmailInvoice = async () => {
+  try {
+        await instance.post('/invoices', {
+  ...invoice,
+  customer: {
+    email: customer?.email,
+    contactNumber: customer?.contactNumber,
+    name: customer?.name
+  }
+});
+    alert('Invoice stored and sent to customer!');
+  } catch (err: any) {
+    alert(err?.response?.data?.message || 'Failed to send invoice.');
+  }
+};
 
   const handlePrint = () => {
     const printableContent = document.getElementById('invoice-content');
