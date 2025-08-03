@@ -11,10 +11,11 @@ import Button from '../common/Button';
 import Modal from '../common/Modal';
 import UpdateRepairStatusForm from './UpdateRepairStatusForm'; // Create this next
 import {useApi} from '../../hooks/useApi'
+
 const AssignedTasksList: React.FC = () => {
   const { user } = useAuth();
 const api = useApi();
-const [tasks, setTasks] = useState<RepairTicket[]>([]);
+  const [tasks, setTasks] = useState<RepairTicket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTask, setSelectedTask] = useState<RepairTicket | null>(null);
@@ -26,15 +27,10 @@ const [tasks, setTasks] = useState<RepairTicket[]>([]);
     try {
 
       // Fetch tasks assigned to this technician, excluding completed/cancelled ones
-      const allTasks: any= await api.getRepairTicketsForTech({ assignedTechnicianId: user.id });
-// const pairs=await axios.get<RepairTicket>("/api/repairs")
-//            if (!Array.isArray(pairs.data)) {
-//           throw new Error('Expected an array of invoice repair tickets');
-//         }   
-// const plp=allTasks.filter((t:any)=>t.assignedTechnicianId=use?.id)
-const assignedTsk=allTasks.filter((tsk:any)=>(tsk.assignedTechnicianId==user?.id)).filter((t:any)=>t.status==RepairStatus.WAITING_FOR_PARTS||t.status==RepairStatus.IN_PROGRESS)
-console.log(assignedTsk)
-setTasks(assignedTsk);
+      const allTasks:any = await api.getRepairTicketsForTech({ assignedTechnicianId: user.id });
+
+      setTasks(allTasks.filter((task:any) => task.status !== RepairStatus.COMPLETED && task.status !== RepairStatus.CANCELLED && task.status !== RepairStatus.PAID));
+      console.log(allTasks[0].assignedTechnicianId)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch assigned tasks.');
     } finally {
@@ -78,13 +74,12 @@ setTasks(assignedTsk);
 
   return (
     <Card title="My Assigned Tasks" className="mt-6">
-<Table<RepairTicket>
-  columns={columns}
-  data={tasks ?? []}
-  isLoading={isLoading}
-  emptyMessage="No active tasks assigned to you."
-/>
-
+      <Table<RepairTicket>
+        columns={columns}
+        data={tasks}
+        isLoading={isLoading}
+        emptyMessage="No active tasks assigned to you."
+      />
       {selectedTask && (
         <Modal isOpen={!!selectedTask} onClose={() => setSelectedTask(null)} title={`Update Status for Ticket ${selectedTask.id}`}>
           <UpdateRepairStatusForm ticket={selectedTask} onSuccess={handleUpdateSuccess} />
