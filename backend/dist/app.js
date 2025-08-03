@@ -11,6 +11,7 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const repair_routes_1 = __importDefault(require("./routes/repair.routes"));
 const repair_routes_2 = __importDefault(require("./routes/repair.routes"));
 const repair_routes_3 = __importDefault(require("./routes/repair.routes"));
+const repair_routes_4 = __importDefault(require("./routes/repair.routes"));
 const log_routes_1 = __importDefault(require("./routes/log.routes"));
 const invoiceRoutes_1 = __importDefault(require("./routes/invoiceRoutes"));
 const PurchaseOrder_1 = __importDefault(require("./models/PurchaseOrder"));
@@ -50,6 +51,7 @@ app.use('/api/suppliers', supplier_routes_1.default);
 // Public routes
 app.use('/api/auth', auth_routes_1.default);
 // Protected routes
+app.use('/api/repairs', repair_routes_4.default);
 app.use('/api/repairs', repair_routes_1.default);
 app.use('/api/system-logs', log_routes_1.default);
 app.use('/api/users', auth_1.authenticateToken, user_routes_1.default);

@@ -7,6 +7,10 @@ import repairRoutes from './routes/repair.routes';
 import getRepairById from './routes/repair.routes'
 import updateRepairByTicketId from './routes/repair.routes'
 
+import updateRepair from './routes/repair.routes'
+
+
+
 import logRoutes from './routes/log.routes';
 import invoiceRoutes from './routes/invoiceRoutes'
 import PurchaseOrder from './models/PurchaseOrder';
@@ -69,6 +73,7 @@ app.use('/api/suppliers', supplierRoutes);
 // Public routes
 app.use('/api/auth', authRoutes);
 // Protected routes
+app.use('/api/repairs', updateRepair)
 
 app.use('/api/repairs',  repairRoutes);
 app.use('/api/system-logs', logRoutes);
