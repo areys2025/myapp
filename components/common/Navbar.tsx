@@ -36,7 +36,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
               </button>
             )}
             <Link to="/dashboard" className="flex-shrink-0 text-white font-bold text-xl">
-              {APP_NAME}
+             <span className="text-base sm:text-lg font-semibold truncate max-w-[150px] sm:max-w-none">{APP_NAME}</span>
+
             </Link>
           </div>
           <div className="flex items-center">
