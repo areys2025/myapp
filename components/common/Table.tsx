@@ -58,8 +58,9 @@ const Table = <T extends { id: string | number },>(
   };
 
 
-  return (
-    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+return (
+  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+    <div className="overflow-x-auto w-full"> {/* 👈 Add this wrapper */}
       <table className={tableClassName}>
         <thead className={theadClassName}>
           <tr>
@@ -111,8 +112,10 @@ const Table = <T extends { id: string | number },>(
           )}
         </tbody>
       </table>
-    </div>
-  );
+    </div> 
+  </div>
+);
+
 };
 
 export default Table;
