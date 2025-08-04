@@ -146,7 +146,7 @@ const handleBlockchainLogin = async () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
-          <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
+          <Button type="submit" className="w-full sm:w-auto" isLoading={isLoading} disabled={isLoading}>
             Sign in
           </Button>
         </form>

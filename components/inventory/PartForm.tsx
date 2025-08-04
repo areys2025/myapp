@@ -139,7 +139,7 @@ const fetchSuppliers = useCallback(async () => {
   />
 </div>
 
-      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
+      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
         {currentItem ? 'Update Part' : 'Add Part'}
       </Button>
     </form>

@@ -121,7 +121,7 @@ const ResetPasswordPage: React.FC = () => {
           whileTap={{ scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
+          <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
             {isLoading ? 'Resetting...' : 'Reset Password'}
           </Button>
         </motion.div>

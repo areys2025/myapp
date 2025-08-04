@@ -188,7 +188,7 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                     />
                 </div>
 
-                <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
+                <Button type="submit" className="w-full sm:w-auto" isLoading={isLoading} disabled={isLoading}>
                     {isEditMode ? 'Update Admin' : 'Register Admin'}
                 </Button>
             </form>

@@ -142,7 +142,7 @@ const itemOptions = inventoryItems.map(item => ({
 )}
 
 
-      <Button type="submit" isLoading={isLoading} disabled={isLoading || !selectedItem}  className="w-full">
+      <Button type="submit" isLoading={isLoading} disabled={isLoading || !selectedItem}  className="w-full sm:w-auto">
         Create Purchase Order
       </Button>
     </form>

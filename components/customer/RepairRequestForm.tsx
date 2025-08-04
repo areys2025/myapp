@@ -118,7 +118,7 @@ console.log("user from context:", user);
           rows={4}
           disabled={isLoading}
         />
-        <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
+        <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
           Submit Request
         </Button>
       </form>

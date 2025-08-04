@@ -194,7 +194,7 @@ console.log(technicianData.contactNumber)
 
         </div>
 
-        <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
+        <Button type="submit" className="w-full sm:w-auto" isLoading={isLoading} disabled={isLoading}>
           {isEditMode ? 'Update Technician' : 'Register Technician'}
         </Button>
       </form>

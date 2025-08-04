@@ -91,7 +91,7 @@ console.log(ticketId , rating , comment , user.email,user.walletAddress)
         rows={3}
         disabled={isLoading}
       />
-      <Button type="submit" isLoading={isLoading} disabled={isLoading || !!successMessage} className="w-full">
+      <Button type="submit" isLoading={isLoading} disabled={isLoading || !!successMessage} className="w-full sm:w-auto">
         Submit Feedback
       </Button>
     </form>

@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
                 <span className="text-gray-300 mr-4 hidden sm:block">
                   Welcome, {user.name} ({formatRole(user.role)})
                 </span>
-                <Button onClick={handleLogout} variant="secondary" size="sm">
+                <Button onClick={handleLogout} variant="secondary" size="sm" >
                   Logout
                 </Button>
               </>

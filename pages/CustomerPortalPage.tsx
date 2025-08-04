@@ -19,13 +19,13 @@ const CustomerPortalPage: React.FC = () => {
         <Card title="Quick Actions" className="bg-gradient-to-r from-primary to-primary-dark text-white">
           <div className="space-y-3">
             <Link to="/request-repair">
-              <Button className="w-full bg-transparent border border-white text-white hover:bg-primary-light hover:text-primary-dark focus:ring-white">
+              <Button className="w-full sm:w-auto bg-transparent border border-white text-white hover:bg-primary-light hover:text-primary-dark focus:ring-white">
                 <WrenchScrewdriverIcon className="w-5 h-5 mr-2" />
                 Submit New Repair Request
               </Button>
             </Link>
             <Link to="/my-repairs">
-              <Button className="w-full bg-transparent border border-white text-white hover:bg-primary-light hover:text-primary-dark focus:ring-white">
+              <Button className="w-full sm:w-auto bg-transparent border border-white text-white hover:bg-primary-light hover:text-primary-dark focus:ring-white">
                 <HomeIcon className="w-5 h-5 mr-2" />
                 View All My Repairs
               </Button>
