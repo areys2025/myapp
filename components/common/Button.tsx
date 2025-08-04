@@ -36,11 +36,12 @@ const variantStyles = {
 
 
 const sizeStyles = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-base',
-  lg: 'px-6 py-3 text-lg',
-  icon: 'w-9 h-9 rounded-full flex items-center justify-center p-2 text-neutral-700 hover:bg-neutral-100 transition-colors',
+  sm: 'px-2 py-1 text-sm sm:px-3 sm:py-1.5',
+  md: 'px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base',
+  lg: 'px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg',
+  icon: 'w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center p-1 sm:p-2 text-neutral-700 hover:bg-neutral-100 transition-colors',
 };
+
 
 
   return (
