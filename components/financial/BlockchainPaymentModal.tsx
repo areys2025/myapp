@@ -158,11 +158,11 @@ const tx = await signer.sendTransaction({
         )} */}
 
 {paymentMethod === 'blockchain' ? (
-  <Button onClick={handlePayment} isLoading={isLoading} className="w-full sm:w-auto">
+  <Button onClick={handlePayment} isLoading={isLoading} className="w-full">
     Confirm & Pay with Wallet
   </Button>
 ) : (
-  <Button onClick={handleWaafiPayment} isLoading={isLoading} className="w-full sm:w-auto">
+  <Button onClick={handleWaafiPayment} isLoading={isLoading} className="w-full">
     Confirm & Pay with WaafiPay
   </Button>
 )}
@@ -199,12 +199,12 @@ const tx = await signer.sendTransaction({
         {paymentStatus === 'error' && errorMessage && (
           <>
             <Alert type="error" message={errorMessage} />
-            <Button onClick={handlePayment} isLoading={isLoading} className="w-full sm:w-auto">
+            <Button onClick={handlePayment} isLoading={isLoading} className="w-full mt-2">
               Retry Payment
             </Button>
           </>
         )}
-         <Button onClick={onClose} variant="ghost" className="w-full sm:w-auto" disabled={isLoading && paymentStatus === 'processing'}>
+         <Button onClick={onClose} variant="ghost" className="w-full mt-2" disabled={isLoading && paymentStatus === 'processing'}>
             Cancel
         </Button>
       </div>

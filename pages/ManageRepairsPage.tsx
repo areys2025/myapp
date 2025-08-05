@@ -101,7 +101,7 @@ getTickets()
             Assign Tech
           </Button>
         )}
-        
+
         {/* Add other actions like View Details, Edit, etc. */}
       </div>
     )},

@@ -106,7 +106,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSuccess }) => {
         />
       </div>
       
-      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
+      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
         Add Expense
       </Button>
     </form>

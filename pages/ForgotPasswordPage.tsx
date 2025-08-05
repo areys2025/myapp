@@ -76,7 +76,7 @@ const ForgotPasswordPage: React.FC = () => {
           />
 
           <motion.div whileTap={{ scale: 0.98 }}>
-            <Button type="submit" isLoading={isLoading} disabled={isLoading || !email} className="w-full sm:w-auto">
+            <Button type="submit" isLoading={isLoading} disabled={isLoading || !email} className="w-full">
               Send Reset Link
             </Button>
           </motion.div>

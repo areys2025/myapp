@@ -120,7 +120,7 @@ const RegisterForm: React.FC = () => {
           <Input id="contactNumber" label="Contact Number" type="tel" required value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
           <Input id="deviceType" label="Device Type" type="text" required value={deviceType} onChange={(e) => setDeviceType(e.target.value)} />
           <Input id="walletAddress" label="Wallet Address" type="text" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
-          <Button type="submit" className="w-full sm:w-auto" isLoading={isLoading} disabled={isLoading || !!success}>
+          <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading || !!success}>
             Register
           </Button>
         </form>

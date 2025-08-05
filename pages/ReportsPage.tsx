@@ -267,16 +267,16 @@ const ReportsPage: React.FC = () => {
       <Card title="Detailed Data (Placeholder)">
         <p className="text-neutral-DEFAULT">This section could include tables for detailed sales, repair logs, or options to export data.</p>
     <div className="mt-4 space-x-2">
-  <Button variant="primary" onClick={handleExportSalesCSV}>
+  <Button className="w-full sm:w-auto" variant="primary" onClick={handleExportSalesCSV}>
     Export Sales Data (CSV)
   </Button>
-  <Button variant="secondary" onClick={handleExportPDF}>
+  <Button className="w-full sm:w-auto" variant="secondary" onClick={handleExportPDF}>
     Export Repair Logs (PDF)
   </Button>
-  <Button onClick={handleExportCSV}>
+  <Button className="w-full sm:w-auto" onClick={handleExportCSV}>
     Download CSV
   </Button>
-  <Button variant="ghost" onClick={handleExportToExcel}>
+  <Button className="w-full sm:w-auto" variant="ghost" onClick={handleExportToExcel}>
     Export as Excel
   </Button>
 </div>

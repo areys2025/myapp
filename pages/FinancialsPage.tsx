@@ -12,10 +12,10 @@ const FinancialsPage: React.FC = () => {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-dark">Financial Management</h1>
         <div className="space-x-2">
-            <Button variant={activeTab === 'invoices' ? 'primary' : 'ghost'} onClick={() => setActiveTab('invoices')}>
+            <Button className="w-full sm:w-auto" variant={activeTab === 'invoices' ? 'primary' : 'ghost'} onClick={() => setActiveTab('invoices')} >
             Invoices & Billing
             </Button>
-            <Button variant={activeTab === 'expenses' ? 'primary' : 'ghost'} onClick={() => setActiveTab('expenses')}>
+            <Button className="w-full sm:w-auto" variant={activeTab === 'expenses' ? 'primary' : 'ghost'} onClick={() => setActiveTab('expenses')}>
             Expense Tracking
             </Button>
         </div>

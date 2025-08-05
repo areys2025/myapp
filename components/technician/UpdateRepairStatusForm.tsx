@@ -110,7 +110,7 @@ await api.updateRepairTicket( ticket.id,updates);
         </div>
       )}
 
-      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
+      <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
         Update Status
       </Button>
     </form>

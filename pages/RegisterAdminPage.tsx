@@ -132,7 +132,7 @@ const RegisterAdminPage: React.FC = () => {
             placeholder="0x1234567890abcdef..."
           />
 
-          <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full sm:w-auto">
+          <Button type="submit" isLoading={isLoading} disabled={isLoading} className="w-full">
             Register Admin
           </Button>
         </form>
