@@ -47,7 +47,7 @@ const UpdateRepairStatusForm: React.FC<UpdateRepairStatusFormProps> = ({ ticket,
       }
 console.log("meeshaan fiiri: "+ticket.id)
 
-await api.updateRepairTicket( ticket.id,updates);
+await api.updateRepairTicket( ticket._id,updates);
 
 //       console.log(ticket.id)
 // await axios.put(`${API_URL}/${ticket._id}`, updates, {

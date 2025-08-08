@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expId = exports.getNextPartId = exports.getNextInvId = exports.getNextuserId = exports.getNextTechnicianId = void 0;
+exports.getworkOrderId = exports.expId = exports.getNextPartId = exports.getNextInvId = exports.getNextuserId = exports.getNextTechnicianId = void 0;
 // backend/utils/getNextTechnicianId.ts
 const counter_model_1 = __importDefault(require("../models/counter.model"));
 const getNextTechnicianId = async () => {
@@ -39,3 +39,8 @@ const expId = async () => {
     return `exp ${counter.value}`;
 };
 exports.expId = expId;
+const getworkOrderId = async () => {
+    const counter = await counter_model_1.default.findOneAndUpdate({ name: "workOrderId" }, { $inc: { value: 1 } }, { new: true, upsert: true });
+    return `WO25${counter.value}`;
+};
+exports.getworkOrderId = getworkOrderId;

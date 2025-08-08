@@ -57,3 +57,13 @@ export const expId = async (): Promise<string> => {
 
   return `exp ${counter.value}`;
 };
+
+
+export const getworkOrderId = async (): Promise<string> => {
+  const counter =await Counter.findOneAndUpdate(
+    {name:"workOrderId"},
+    {$inc:{value:1}},
+    {new:true, upsert:true}
+  );
+  return `WO25${counter.value}`;
+}

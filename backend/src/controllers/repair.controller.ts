@@ -204,7 +204,7 @@ if(updatedTicket){
 export const updateRepairByTicketId = async (req: Request, res: Response) => {
   const { _id } = req.params;
   const updates = req.body;
-  
+  console.log(_id)
   try {
     const repair = await Repair.findOneAndUpdate(
       { TicketId: _id },

@@ -267,7 +267,6 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
 
 
     updateRepairTicket: async (id: string, updates: Partial<RepairTicket>): Promise<RepairTicket> => {
-      console.log("id waa kan " + id)
       const response = await instance.put<RepairTicket>(`/repairs/${id}`, updates);
       return response.data;
     },
@@ -295,11 +294,13 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
    getRepairTicketsForTech: async (filter?: { assignedTechnicianId?: string }) => {
       const params = filter?.assignedTechnicianId?{ assignedTechnicianId: filter.assignedTechnicianId }: {};
       const response = await instance.get('/repairs', { params });
-        if (!Array.isArray(response.data)) {
+             console.log("All data"+ response.data)
+if (!Array.isArray(response.data)) {
           throw new Error('Expected an array of invoice repair tickets');
-        }    
+        }     
+        
       return response.data.map((ticket: any) => ({
-        id: ticket.TicketId,
+        id: ticket._id,
         deviceInfo: ticket.deviceInfo,
         customerName:ticket.customerName,
         issueDescription: ticket.issueDescription,
@@ -339,10 +340,11 @@ getSuppliers: async (): Promise<Supplier[]> => {
 
 
 
-updateTechnician: async (id: string, technicianData: Partial<TechnicianPayload>): Promise<Technician> => {
+    updateTechnician: async (id: string, technicianData: Partial<TechnicianPayload>): Promise<Technician> => {
       const response = await Pinstance.put<Technician>(`/technicians/${id}`, technicianData);
       return response.data;
     },
+    
     createTechnician: async (technicianData: TechnicianPayload): Promise<Technician> => {
       const response = await instance.post<Technician>('/technicians', technicianData);
       return response.data;

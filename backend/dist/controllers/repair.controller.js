@@ -211,6 +211,7 @@ exports.updateRepair = updateRepair;
 const updateRepairByTicketId = async (req, res) => {
     const { _id } = req.params;
     const updates = req.body;
+    console.log(_id);
     try {
         const repair = await repair_model_1.default.findOneAndUpdate({ TicketId: _id }, updates, { new: true });
         console.log(repair === null || repair === void 0 ? void 0 : repair.issueDescription);

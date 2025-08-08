@@ -81,7 +81,6 @@ app.use('/api/system-logs', logRoutes);
 app.use('/api/users', authenticateToken, userRoutes);
 app.use('/api/dashboard', authenticateToken, dashboardRoutes);
 app.use("/api/regisadmin",authenticateToken,registerAdmin)
-app.use("/api/technicians",authenticateToken,technicianRoutes)
 
 app.use("/api/getAdmins",getAllAdmins)
 app.use('/api/regisadmin/:id', updateAdmin);
@@ -92,6 +91,7 @@ app.use('/api/used-parts', usedPartsRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);
 
+app.use("/api/technicians",authenticateToken,technicianRoutes)
 
 
 app.use('/api/forgot-password', forgotPassword);

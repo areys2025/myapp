@@ -7,8 +7,10 @@ exports.createUsedPart = void 0;
 const InventoryItem_1 = __importDefault(require("../models/InventoryItem")); // Your inventory model
 const UsedPart_model_1 = __importDefault(require("../models/UsedPart.model"));
 const getNextId_1 = require("../config/getNextId");
+const getNextId_2 = require("../config/getNextId");
 const createUsedPart = async (req, res) => {
     const prtId = await (0, getNextId_1.getNextPartId)();
+    const wrkordId = await (0, getNextId_2.getworkOrderId)();
     try {
         const { partName, partId, quantity, workOrderId, notes } = req.body;
         // 1. Save used part record
@@ -17,13 +19,13 @@ const createUsedPart = async (req, res) => {
             partName,
             partId,
             quantity,
-            workOrderId,
+            workOrderId: wrkordId,
             notes,
         });
         await usedPart.save();
         // 2. Find inventory item by partId (or name, depending on your schema)
         const inventoryItem = await InventoryItem_1.default.findOne({ _id: partId }); // or { name: partName } if you prefer
-        console.log(inventoryItem === null || inventoryItem === void 0 ? void 0 : inventoryItem.updatedAt);
+        console.log(usedPart);
         if (!inventoryItem) {
             return res.status(404).json({ message: 'Inventory item not found' });
         }
