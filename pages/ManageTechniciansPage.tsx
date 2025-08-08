@@ -87,6 +87,7 @@ const ManageTechniciansPage: React.FC = () => {
   };
 
   const handleAvailabilityToggle = async (tech: Technician) => {
+  
     try {
       await api.updateTechnician(tech.id, {
         ...tech,
@@ -97,7 +98,6 @@ const ManageTechniciansPage: React.FC = () => {
       setError(err instanceof Error ? err.message : 'Failed to update technician availability.');
     }
   };
-
 
   const columns:any = [
     { header: <><FaUserCog className="inline mr-1" /> Name</>, accessor: 'name' as keyof Technician },
@@ -123,24 +123,21 @@ const ManageTechniciansPage: React.FC = () => {
           <span className="text-gray-400 italic">No contact</span>
         ),
     },
-    {
-      header: 'Availability',
-      accessor: (tech: Technician) => (
-        <div className="flex items-center space-x-2">
-          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${tech.availability ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
-            {tech.availability ? 'Available' : 'Unavailable'}
-          </span>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => handleAvailabilityToggle(tech)}
-            className="ml-2"
-          >
-            Toggle
-          </Button>
-        </div>
-      )
-    },
+    { header: 'Availability', accessor: (tech: Technician) => (
+      <div className="flex items-center space-x-2">
+        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${tech.availability ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
+          {tech.availability ? 'Available' : 'Unavailable'}
+        </span>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => handleAvailabilityToggle(tech)}
+          className="ml-2"
+        >
+          Toggle
+        </Button>
+      </div>
+    )},
     {
       header: 'Actions',
       accessor: (tech: Technician) => (

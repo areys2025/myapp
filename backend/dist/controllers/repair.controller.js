@@ -208,14 +208,6 @@ const updateRepair = async (req, res) => {
     }
 };
 exports.updateRepair = updateRepair;
-// export const createRepair = async (req: Request, res: Response) => {
-//   try {
-//     const repair = await Repair.create(req.body);
-//     res.status(201).json(repair);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to create repair', error });
-//   }
-// };
 const updateRepairByTicketId = async (req, res) => {
     const { _id } = req.params;
     const updates = req.body;

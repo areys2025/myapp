@@ -200,14 +200,7 @@ if(updatedTicket){
     res.status(500).json({ message: 'Failed to update repair ticket' });
   }
 };
-// export const createRepair = async (req: Request, res: Response) => {
-//   try {
-//     const repair = await Repair.create(req.body);
-//     res.status(201).json(repair);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to create repair', error });
-//   }
-// };
+
 export const updateRepairByTicketId = async (req: Request, res: Response) => {
   const { _id } = req.params;
   const updates = req.body;
