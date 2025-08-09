@@ -46,10 +46,6 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: false // Make optional and handle in business logic
     },
-    deviceType: {
-        type: String,
-        required: false // Make optional and handle in business logic
-    },
     specialization: {
         type: Array,
         required: false // Make optional and handle in business logic
@@ -65,8 +61,8 @@ const userSchema = new mongoose_1.Schema({
 // Add middleware to validate role-specific fields
 userSchema.pre('save', function (next) {
     if (this.role === UserRole.CUSTOMER) {
-        if (!this.contactNumber || !this.deviceType) {
-            next(new Error('Customer requires contactNumber and deviceType'));
+        if (!this.contactNumber) {
+            next(new Error('Customer requires contactNumber'));
             return;
         }
     }

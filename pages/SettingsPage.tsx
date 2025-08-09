@@ -29,10 +29,7 @@ const SettingsPage: React.FC = () => {
   const [contactNumber, setContactNumber] = useState(
     user && user.role === UserRole.CUSTOMER ? (user as Customer).contactNumber : ''
   );
-  const [deviceType, setDeviceType] = useState(
-    user && user.role === UserRole.CUSTOMER ? (user as Customer).deviceType : ''
-  );
-  
+
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -55,7 +52,6 @@ const handleProfileUpdate = async (e: React.FormEvent) => {
 
     if (user.role === UserRole.CUSTOMER) {
       (payload as Customer).contactNumber = contactNumber;
-      (payload as Customer).deviceType = deviceType;
     }
 
 const res = await instance.put<User>(`/users/${user.id}`, payload);
@@ -132,7 +128,6 @@ const handlePasswordChange = async (e: React.FormEvent) => {
           {user.role === UserRole.CUSTOMER && (
             <>
               <Input label="Contact Number" id="contactNumber" type="tel" value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
-              <Input label="Primary Device Type" id="deviceType" value={deviceType} onChange={(e) => setDeviceType(e.target.value)} />
             </>
           )}
           {/* Add role-specific fields here if needed, e.g., Technician specialization */}

@@ -25,15 +25,11 @@ const [tasks, setTasks] = useState<RepairTicket[]>([]);
     setError(null);
     try {
 
-      // Fetch tasks assigned to this technician, excluding completed/cancelled ones
       const allTasks: any= await api.getRepairTicketsForTech({ assignedTechnicianId: user.id });
-// const pairs=await axios.get<RepairTicket>("/api/repairs")
-//            if (!Array.isArray(pairs.data)) {
-//           throw new Error('Expected an array of invoice repair tickets');
-//         }   
-// const plp=allTasks.filter((t:any)=>t.assignedTechnicianId=use?.id)
-console.log("bur bur :"+user.id)
-const assignedTsk=allTasks.filter((tsk:any)=>(tsk.assignedTechnicianId==user?.id)).filter((t:any)=>t.status==RepairStatus.WAITING_FOR_PARTS||t.status==RepairStatus.IN_PROGRESS)
+
+const assignedTsk:any=allTasks.filter((t:any)=>t.status==RepairStatus.WAITING_FOR_PARTS||t.status==RepairStatus.IN_PROGRESS)
+const jk:any=allTasks.filter((t:any)=>t.assignedTechnicianId==user.id)
+console.log(jk.map((t:any)=>t.assignedTechnicianId))
 setTasks(assignedTsk);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch assigned tasks.');
@@ -52,7 +48,7 @@ setTasks(assignedTsk);
   };
 
   const columns = [
-    { header: 'Ticket ID', accessor: 'id' as keyof RepairTicket, className: 'font-mono text-xs' },
+    { header: 'Ticket ID', accessor: 'TicketId' as keyof RepairTicket, className: 'font-mono text-xs' },
     { header: 'Customer', accessor: 'customerName' as keyof RepairTicket },
     { header: 'Device Info', accessor: 'deviceInfo' as keyof RepairTicket },
     { header: 'Issue', accessor: 'issueDescription' as keyof RepairTicket, cellClassName: 'max-w-xs truncate' },
@@ -86,7 +82,7 @@ setTasks(assignedTsk);
 />
 
       {selectedTask && (
-        <Modal isOpen={!!selectedTask} onClose={() => setSelectedTask(null)} title={`Update Status for Ticket ${selectedTask.id}`}>
+        <Modal isOpen={!!selectedTask} onClose={() => setSelectedTask(null)} title={`Update Status for Ticket ${selectedTask.TicketId}`}>
           <UpdateRepairStatusForm ticket={selectedTask} onSuccess={handleUpdateSuccess} />
         </Modal>
       )}

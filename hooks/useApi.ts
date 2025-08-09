@@ -124,7 +124,6 @@ updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled
         name: adm.name,
         email: adm.email,
         role: adm.role,
-        deviceType:adm.deviceType,
         availability: adm.availability,
         contactNumber: adm.contactNumber,
         walletAddress: adm.walletAddress,
@@ -293,12 +292,12 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
     getRepairTicketsForTech: async (filter?: { assignedTechnicianId?: string }) => {
       const params = filter?.assignedTechnicianId ? { assignedTechnicianId: filter.assignedTechnicianId } : {};
       const response = await instance.get('/repairs', { params });
-console.log(params)
+     console.log(response.data)
       if (!Array.isArray(response.data)) {
         throw new Error('Expected an array of invoice repair tickets');
       }
-      return response.data.map((ticket: any) => ({
 
+      return response.data.map((ticket: any) => ({
         id: ticket._id,
         TicketId: ticket.TicketId,
         deviceInfo: ticket.deviceInfo,

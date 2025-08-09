@@ -11,7 +11,6 @@ const RegisterAdminPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
-  const [deviceType, setDeviceType] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -52,7 +51,6 @@ const RegisterAdminPage: React.FC = () => {
       setPassword('');
       setConfirmPassword('');
       setContactNumber('');
-      setDeviceType('');
       setWalletAddress('');
     } catch (err: any) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Registration failed' });
@@ -113,15 +111,7 @@ const RegisterAdminPage: React.FC = () => {
             onChange={(e) => setContactNumber(e.target.value)}
             placeholder="e.g., 252-61-1234567"
           />
-          <Input
-            id="deviceType"
-            label="Device Type"
-            type="text"
-            required
-            value={deviceType}
-            onChange={(e) => setDeviceType(e.target.value)}
-            placeholder="e.g., MacBook Pro, Windows PC"
-          />
+
           <Input
             id="walletAddress"
             label="Wallet Address"

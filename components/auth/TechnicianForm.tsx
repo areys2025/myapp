@@ -112,7 +112,6 @@ console.log(technicianData.contactNumber)
           password,
           contactNumber,
           specialization: selectedSpecs,
-          deviceType: 'None',
           walletAddress,
           role: UserRole.TECHNICIAN,
         });

@@ -59,7 +59,7 @@ const formatUserResponse = (user, token) => {
         case user_model_1.UserRole.CUSTOMER:
             return {
                 token,
-                user: Object.assign(Object.assign({}, baseUser), { contactNumber: user.contactNumber || '', deviceType: user.deviceType || '', role: user_model_1.UserRole.CUSTOMER // Using enum value directly
+                user: Object.assign(Object.assign({}, baseUser), { contactNumber: user.contactNumber || '', role: user_model_1.UserRole.CUSTOMER // Using enum value directly
                  })
             };
         case user_model_1.UserRole.TECHNICIAN:
@@ -116,7 +116,7 @@ const login = async (req, res) => {
 exports.login = login;
 const register = async (req, res) => {
     try {
-        const { email, password, name, role, walletAddress, contactNumber, deviceType, specialization, availability } = req.body;
+        const { email, password, name, role, walletAddress, contactNumber, specialization, availability } = req.body;
         // Check if user already exists (by email or walletAddress)
         const existingUser = await user_model_1.default.findOne({
             $or: [
@@ -149,7 +149,6 @@ const register = async (req, res) => {
         };
         if (role === user_model_1.UserRole.CUSTOMER) {
             userData.contactNumber = contactNumber || '';
-            userData.deviceType = deviceType || '';
         }
         if (role === user_model_1.UserRole.TECHNICIAN) {
             userData.specialization = specialization || '';

@@ -27,7 +27,6 @@ const formatUserResponse = (user: any, token: string) => {
         user: {
           ...baseUser,
           contactNumber: user.contactNumber || '',
-          deviceType: user.deviceType || '',
           role: UserRole.CUSTOMER // Using enum value directly
         }
       };
@@ -118,7 +117,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       role, 
       walletAddress,
       contactNumber,
-      deviceType,
       specialization,
       availability 
     } = req.body;
@@ -160,7 +158,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     if (role === UserRole.CUSTOMER) {
       userData.contactNumber = contactNumber || '';
-      userData.deviceType = deviceType || '';
     }
 
     if (role === UserRole.TECHNICIAN) {

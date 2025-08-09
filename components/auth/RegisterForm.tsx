@@ -14,7 +14,6 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
-  const [deviceType, setDeviceType] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
 
   const role = 'Customer';
@@ -61,9 +60,6 @@ const RegisterForm: React.FC = () => {
       return setError("Password must be at least 6 characters long.");
     }
 
-    if (!deviceType.trim()) {
-      return setError("Device type is required.");
-    }
 
     setIsLoading(true);
     try {
@@ -72,7 +68,6 @@ const RegisterForm: React.FC = () => {
         email,
         password,
         contactNumber,
-        deviceType,
         walletAddress,
         role
       });
@@ -118,7 +113,7 @@ const RegisterForm: React.FC = () => {
           <Input id="password" label="Password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           <Input id="confirmPassword" label="Confirm Password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           <Input id="contactNumber" label="Contact Number" type="tel" required value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
-          <Input id="deviceType" label="Device Type" type="text" required value={deviceType} onChange={(e) => setDeviceType(e.target.value)} />
+          {/* <Input id="deviceType" label="Device Type" type="text" required value={deviceType} onChange={(e) => setDeviceType(e.target.value)} /> */}
           <Input id="walletAddress" label="Wallet Address" type="text" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
           <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading || !!success}>
             Register

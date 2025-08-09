@@ -41,12 +41,7 @@ const CustomerPortalPage: React.FC = () => {
           </ul>
         </Card>
         
-        <Card title="Device Information (Placeholder)">
-            <p className="text-neutral-DEFAULT">Your registered device: <span className="font-semibold">{
-              user && user.role === UserRole.CUSTOMER ? (user as Customer).deviceType : 'Not specified'
-            }</span></p>
-            <Button size="sm" variant="ghost" className="mt-2">Manage Devices</Button>
-        </Card>
+
       </div>
       <RepairStatusList /> 
     </div>

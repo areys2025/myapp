@@ -68,7 +68,7 @@ await api.updateRepairTicket( ticket.id,updates);
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && <Alert type="error" message={error} onClose={() => setError(null)} />}
 
-      <p>Updating status for ticket: <span className="font-semibold">{ticket.id}</span></p>
+      <p>Updating status for ticket: <span className="font-semibold">{ticket.TicketId}</span></p>
       <p>Device: <span className="font-semibold">{ticket.deviceInfo}</span></p>
 
       <Select

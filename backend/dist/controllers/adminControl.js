@@ -63,7 +63,6 @@ const registerAdmin = async (req, res) => {
             password: hashedPassword,
             contactNumber,
             walletAddress,
-            deviceType: 'android',
             role: user_model_1.UserRole.MANAGER, // you may want to update this if it's wrong
         });
         await newUser.save();
@@ -73,7 +72,6 @@ const registerAdmin = async (req, res) => {
             email,
             password: hashedPassword,
             contactNumber,
-            deviceType: 'android',
             walletAddress,
             role: user_model_1.UserRole.MANAGER,
             // availability,

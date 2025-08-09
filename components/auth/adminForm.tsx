@@ -24,7 +24,6 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
     const [contactNumber, setContactNumber] = useState('');
     const [specialization, setSpecialization] = useState('');
     const [walletAddress, setWalletAddress] = useState('');
-    const [deviceType, setDeviceType] = useState('');
     const [availability, setAvailability] = useState(true);
 
     const [error, setError] = useState<string | null>(null);
@@ -42,7 +41,6 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
             setContactNumber(currentAdmin.contactNumber || '');
             setSpecialization(currentAdmin.specialization || '');
             setWalletAddress(currentAdmin.walletAddress || '');
-            setDeviceType(currentAdmin.deviceType || '');
             setAvailability(currentAdmin.availability ?? true);
         } else {
             setId('');
@@ -53,7 +51,6 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
             setContactNumber('');
             setSpecialization('');
             setWalletAddress('');
-            setDeviceType('');
             setAvailability(true);
         }
     }, [currentAdmin]);

@@ -62,20 +62,6 @@ const getRepairById = async (req, res) => {
     }
 };
 exports.getRepairById = getRepairById;
-// export const getRepairTicketsForTech = async (req: Request, res: Response) => {
-//   try {
-//     const filter: any = {};
-//     if (req.query.assignedTechnicianId) {
-//       filter.assignedTechnicianId = req.query.assignedTechnicianId;
-//     }
-//     // You can filter out completed, cancelled, paid here too
-//     filter.status = { $nin: ['COMPLETED', 'CANCELLED', 'PAID'] };
-//     const tickets = await Repair.find(filter).lean();
-//     res.status(200).json(tickets);
-//   } catch (err) {
-//     res.status(500).json({ message: 'Failed to fetch repair tickets.' });
-//   }
-// };
 const getRepairTicketsForTech = async (req, res) => {
     try {
         const filter = {};
@@ -92,6 +78,20 @@ const getRepairTicketsForTech = async (req, res) => {
     }
 };
 exports.getRepairTicketsForTech = getRepairTicketsForTech;
+// export const getRepairTicketsForTech = async (req: Request, res: Response) => {
+//   try {
+//     const filter: any = {};
+//     if (req.query.assignedTechnicianId) {
+//       filter.assignedTechnicianId = req.query.assignedTechnicianId;
+//     }
+//     // You can filter out completed, cancelled, paid here too
+//     filter.status = { $nin: ['COMPLETED', 'CANCELLED', 'PAID'] };
+//     const tickets = await Repair.find(filter).lean();
+//     res.status(200).json(tickets);
+//   } catch (err) {
+//     res.status(500).json({ message: 'Failed to fetch repair tickets.' });
+//   }
+// };
 // Update repair status
 const updateRepairStatus = async (req, res) => {
     try {
