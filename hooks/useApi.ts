@@ -291,25 +291,31 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
       }
     },
 
-   getRepairTicketsForTech: async (filter?: { assignedTechnicianId?: string }) => {
-      const params = filter?.assignedTechnicianId?{ assignedTechnicianId: filter.assignedTechnicianId }: {};
+    getRepairTicketsForTech: async (filter?: { assignedTechnicianId?: string }) => {
+      const params = filter?.assignedTechnicianId ? { assignedTechnicianId: filter.assignedTechnicianId } : {};
       const response = await instance.get('/repairs', { params });
-             console.log("All data"+ response.data)
-if (!Array.isArray(response.data)) {
-          throw new Error('Expected an array of invoice repair tickets');
-        }     
-        
+
+      if (!Array.isArray(response.data)) {
+        throw new Error('Expected an array of invoice repair tickets');
+      }
       return response.data.map((ticket: any) => ({
+
         id: ticket._id,
+        TicketId: ticket.TicketId,
         deviceInfo: ticket.deviceInfo,
-        customerName:ticket.customerName,
+        customerName: ticket.customerName,
         issueDescription: ticket.issueDescription,
-        requestDate:ticket.requestDate,
-        assignedTechnicianId:ticket.assignedTechnicianId,
-        status:ticket.status,
-  }))
+        requestDate: ticket.requestDate,
+        assignedTechnicianId: ticket.assignedTechnicianId,
+        status: ticket.status,
+        notes: ticket.notes ?? '',
+        completionDate: ticket.completionDate ?? '',
+        createdAt: ticket.createdAt ?? '',
+        updatedAt: ticket.updatedAt ?? '',
+        cost: ticket.cost ?? 0,
+        technicianName: ticket.technicianName ?? '',
+      }))
     },
-  
 getSuppliers: async (): Promise<Supplier[]> => {
     const  data:any = await instance.get<Supplier>('/suppliers');
     return data.data.map((data: any) => ({
