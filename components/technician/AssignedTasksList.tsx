@@ -52,7 +52,7 @@ setTasks(assignedTsk);
   };
 
   const columns = [
-    { header: 'Ticket ID', accessor: 'TicketId' as keyof RepairTicket, className: 'font-mono text-xs' },
+    { header: 'Ticket ID', accessor: 'id' as keyof RepairTicket, className: 'font-mono text-xs' },
     { header: 'Customer', accessor: 'customerName' as keyof RepairTicket },
     { header: 'Device Info', accessor: 'deviceInfo' as keyof RepairTicket },
     { header: 'Issue', accessor: 'issueDescription' as keyof RepairTicket, cellClassName: 'max-w-xs truncate' },
