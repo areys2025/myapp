@@ -32,8 +32,8 @@ const [tasks, setTasks] = useState<RepairTicket[]>([]);
 //           throw new Error('Expected an array of invoice repair tickets');
 //         }   
 // const plp=allTasks.filter((t:any)=>t.assignedTechnicianId=use?.id)
+console.log("bur bur :"+user.id)
 const assignedTsk=allTasks.filter((tsk:any)=>(tsk.assignedTechnicianId==user?.id)).filter((t:any)=>t.status==RepairStatus.WAITING_FOR_PARTS||t.status==RepairStatus.IN_PROGRESS)
-console.log(assignedTsk)
 setTasks(assignedTsk);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch assigned tasks.');

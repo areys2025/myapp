@@ -293,7 +293,7 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
     getRepairTicketsForTech: async (filter?: { assignedTechnicianId?: string }) => {
       const params = filter?.assignedTechnicianId ? { assignedTechnicianId: filter.assignedTechnicianId } : {};
       const response = await instance.get('/repairs', { params });
-
+console.log(params)
       if (!Array.isArray(response.data)) {
         throw new Error('Expected an array of invoice repair tickets');
       }
