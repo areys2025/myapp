@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvoiceById = exports.getAllExpenses = exports.getAllInvoices = exports.createInvoice = void 0;
+exports.getInvoiceById = exports.getAllExpenses = exports.getAllInvoices = exports.sendInvoiceToEmail = exports.createInvoice = void 0;
 const invoiceModel_1 = __importDefault(require("../models/invoiceModel"));
 '../models/invoiceModel';
 const expenseModel_1 = __importDefault(require("../models/expenseModel"));
+const user_model_1 = __importDefault(require("../models/user.model"));
 const sendInvoiceEmail_1 = require("../config/sendInvoiceEmail");
 const createInvoice = async (req, res) => {
     var _a;
@@ -26,6 +27,32 @@ const createInvoice = async (req, res) => {
     }
 };
 exports.createInvoice = createInvoice;
+const sendInvoiceToEmail = async (req, res) => {
+    var _a;
+    try {
+        const invoice = await invoiceModel_1.default.findById(req.params.id);
+        if (!invoice) {
+            return res.status(404).json({ message: 'Invoice not found' });
+        }
+        // Get customer email
+        let customerEmail = (_a = invoice === null || invoice === void 0 ? void 0 : invoice.customer) === null || _a === void 0 ? void 0 : _a.email;
+        if (!customerEmail && invoice.customerId) {
+            const customer = await user_model_1.default.findById(invoice.customerId);
+            customerEmail = (customer === null || customer === void 0 ? void 0 : customer.email) || '';
+        }
+        if (!customerEmail) {
+            return res.status(400).json({ message: 'No customer email found' });
+        }
+        // Send email
+        await (0, sendInvoiceEmail_1.sendInvoiceEmail)(customerEmail, invoice);
+        res.json({ message: 'Invoice sent successfully' });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error sending invoice' });
+    }
+};
+exports.sendInvoiceToEmail = sendInvoiceToEmail;
 const getAllInvoices = async (req, res) => {
     try {
         const invoices = await invoiceModel_1.default.find({

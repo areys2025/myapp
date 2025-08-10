@@ -106,7 +106,7 @@ setInvoices(invoices.filter(t => t.cost && t.cost > 0))
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div><p className="text-sm text-neutral-DEFAULT">Total Billed:</p><p className="text-lg font-semibold text-neutral-dark">${totalBilledAmount.toFixed(2)}</p></div>
             <div><p className="text-sm text-neutral-DEFAULT">Total Paid:</p><p className="text-lg font-semibold text-green-600">${totalPaidAmount.toFixed(2)}</p></div>
-            <div><p className="text-sm text-neutral-DEFAULT">Pending:</p><p className="text-lg font-semibold text-red-600">${outstandingAmount.toFixed(2)}</p></div>
+            <div><p className="text-sm text-neutral-DEFAULT">Outstanding:</p><p className="text-lg font-semibold text-red-600">${outstandingAmount.toFixed(2)}</p></div>
         </div>
       }
     >

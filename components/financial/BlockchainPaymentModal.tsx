@@ -8,8 +8,8 @@ import Spinner from '../common/Spinner';
 import Alert from '../common/Alert';
 import { useApi } from '@/hooks/useApi';
 import { ethers } from 'ethers';
-// import { payByWaafiPay } from './paymentEvc';
-import {payByWaafiPays} from './paymentWaafi'
+import { payByWaafiPay } from './paymentEvc.ts';
+// import {payByWaafiPays} from './paymentWaafi'
 import { useAuth } from '@/contexts/AuthContext';
 interface BlockchainPaymentModalProps {
   isOpen: boolean;
@@ -40,24 +40,24 @@ const handleWaafiPayment = async () => {
 
   try {
 const number = user?.contactNumber?.toString() || '';
-await payByWaafiPays({
-  phone: number,
-  amount: 0.001,
-  invoiceId: '7896504',
-  description: 'Test USD',
-});
+// await payByWaafiPays({
+//   phone: number,
+//   amount: 0.001,
+//   invoiceId: '7896504',
+//   description: 'Test USD',
+// });
 
-    // const result = await payByWaafiPay({
-    //   phone: number,
-    //   amount:0.001,
-    //   merchantUid:"M0910291",
-    //   apiUserId: "1000416",
-    //   apiKey: "API-675418888AHX",
-    //   description: `Repair for ${ticket.deviceInfo}`,
-    //   invoiceId: ticket.TicketId,
-    //   referenceId: "12334"
-    // });
-    // if (!result.status) throw new Error(result.error);
+    const result = await payByWaafiPay({
+      phone: number,
+      amount:0.001,
+      merchantUid:"M0910291",
+      apiUserId: "1000416",
+      apiKey: "API-675418888AHX",
+      description: `Repair for ${ticket.deviceInfo}`,
+      invoiceId: ticket.TicketId,
+      referenceId: "12334"
+    });
+    if (!result.status) throw new Error(result.error);
 
     const txId = `waafi-${Date.now()}`;
     await api.processBlockchainPayment(ticket.TicketId, amount, txId); // you may rename this method to processPayment()
@@ -70,13 +70,19 @@ await payByWaafiPays({
       onClose();
     }, 2000);
   } catch (err: any) {
-    setErrorMessage(err.message || 'WaafiPay payment failed.');
-    setPaymentStatus('error');
-  } finally {
-    setIsLoading(false);
-  }
-};
+  console.error("Blockchain payment error:", err);
 
+  // Specific handling for MetaMask rejection
+  if (err.code === "ACTION_REJECTED" || err?.error?.code === 4001) {
+    setErrorMessage("You rejected the transaction in MetaMask.");
+  } else {
+    setErrorMessage(err.message || "Blockchain payment failed.");
+  }
+
+  setPaymentStatus('error');
+}
+
+};
 const handlePayment = async () => {
   setIsLoading(true);
   setPaymentStatus('processing');
@@ -94,7 +100,7 @@ const handlePayment = async () => {
     // Send ETH payment to the smart contract (or predefined address)
 const tx = await signer.sendTransaction({
   to: recipientAddress,
-  value: ethers.parseEther("0.01"), // Keep it small
+  value: ethers.parseEther(amount.toString()), // Keep it small
 });
 
 
@@ -120,13 +126,27 @@ const tx = await signer.sendTransaction({
       throw new Error('Payment record failed on backend');
     }
 
-  } catch (err: any) {
-    console.error("Blockchain payment error:", err);
-    setPaymentStatus('error');
-    setErrorMessage(err.message || "Blockchain payment failed.");
-  } finally {
+} catch (err: any) {
+  console.error("Blockchain payment error:", err);
+
+  if (err.code === "ACTION_REJECTED" || err?.error?.code === 4001) {
+    // User clicked "Reject" in MetaMask
+    setErrorMessage("You rejected the transaction in MetaMask.");
     setIsLoading(false);
+
+  } else if (err?.info?.error?.message?.includes("insufficient funds")) {
+    // MetaMask sometimes sends this message
+    setErrorMessage("Insufficient funds to complete the payment.");
+  } else if (err?.reason) {
+    // Solidity revert reason (from contract)
+    setErrorMessage(`Transaction failed: ${err.reason}`);
+  } else {
+    setErrorMessage(err.message || "Blockchain payment failed.");
   }
+
+  setPaymentStatus('error');
+}
+
 };
 
   
@@ -151,11 +171,6 @@ const tx = await signer.sendTransaction({
           Amount: ${amount.toFixed(2)}
         </p>
         
-        {/* {paymentStatus === 'idle' && (
-          <Button onClick={handlePayment} isLoading={isLoading} className="w-full">
-            Confirm & Pay with Wallet (Simulated)
-          </Button>
-        )} */}
 
 {paymentMethod === 'blockchain' ? (
   <Button onClick={handlePayment} isLoading={isLoading} className="w-full">
@@ -181,7 +196,7 @@ const tx = await signer.sendTransaction({
           <div className="text-center">
             <Spinner size="md" />
             <p className="mt-2 text-neutral-DEFAULT">Processing payment through blockchain...</p>
-            <p className="text-xs text-neutral-DEFAULT">(This is a simulation, no real transaction will occur)</p>
+            <p className="text-xs text-neutral-DEFAULT">(This is a payment, a real transaction will occur)</p>
           </div>
         )}
 

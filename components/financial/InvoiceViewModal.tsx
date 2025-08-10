@@ -14,7 +14,7 @@ interface InvoiceViewModalProps {
 
 const token = localStorage.getItem('token');
 const instance = axios.create({
-  baseURL: 'https://myapp-ph0r.onrender.com/api',
+    baseURL: 'https://myapp-ph0r.onrender.com/api',
   headers: {
     Authorization: token ? `Bearer ${token}` : '',
   },
@@ -47,19 +47,27 @@ const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({ isOpen, onClose, in
 
 const handleEmailInvoice = async () => {
   try {
-        await instance.post('/invoices', {
-  ...invoice,
-  customer: {
+await instance.post(`/invoices/send`, {
+  billedTo: {
+    name: invoice.customerName,
     email: customer?.email,
-    contactNumber: customer?.contactNumber,
-    name: customer?.name
-  }
+    contact: customer?.contactNumber,
+  },
+  invoiceInfo: {
+    id: invoice.TicketId,
+    date: invoice.completionDate,
+    status: invoice.status,
+  },
+repairDetails: [
+    { description: `Repair for: ${invoice.deviceInfo}`, amount: invoice.cost }
+  ],  totalDue: invoice.cost,
 });
-    alert('Invoice stored and sent to customer!');
+    alert('Invoice sent to customer!');
   } catch (err: any) {
     alert(err?.response?.data?.message || 'Failed to send invoice.');
   }
 };
+
 
   const handlePrint = () => {
     const printableContent = document.getElementById('invoice-content');

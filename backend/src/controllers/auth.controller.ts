@@ -4,9 +4,6 @@ import jwt from 'jsonwebtoken';
 import User, { UserRole } from '../models/user.model';
 import { ethers } from 'ethers';
 import Technicain from '../models/Technicain';
-import { logEvent } from '../config/logEvent';
-
-
 // Helper function to format user response based on role
 const formatUserResponse = (user: any, token: string) => {
   // Base user data that all roles share
@@ -14,7 +11,6 @@ const formatUserResponse = (user: any, token: string) => {
     id: user._id.toString(),
     name: user.name,
     email: user.email,
-    contactNumber:user.contactNumber,
     role: user.role,
     walletAddress: user.walletAddress
   };
@@ -57,56 +53,38 @@ const formatUserResponse = (user: any, token: string) => {
   }
 };
 
-
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      res.status(400).json({ message: 'Email and password are required' });
-      return;
-    }
-
+    // Find user by email
     const user = await User.findOne({ email: email.toLowerCase() });
-
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    // Reject login if the user is a MetaMask-only user
-    if (!user.password) {
-      res.status(403).json({ message: 'This user is registered with MetaMask. Please sign in using MetaMask.' });
-      return;
-    }
-
+    // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    // Optional: Log login event
-    await logEvent(
-      'User login',
-      email,
-      user.role,
-      { userInfo: user.id, name: user.name }
-    );
-
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' }
     );
 
-    res.status(200).json(formatUserResponse(user, token));
+    // Send formatted response with role-specific data
+    res.json(formatUserResponse(user, token));
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -121,7 +99,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       availability 
     } = req.body;
 
-    // Check if user already exists (by email or walletAddress)
+
+    // Check if user already exists
     const existingUser = await User.findOne({ 
       $or: [
         { email: email.toLowerCase() },
@@ -134,62 +113,50 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // At least one of password or walletAddress must be provided
-    if (!password && !walletAddress) {
-      res.status(400).json({ message: 'Either password or wallet address is required for registration' });
-      return;
-    }
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Hash the password if provided
-    let hashedPassword = '';
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, salt);
-    }
-
-    // Prepare user data
-    const userData: any = {
+    // Create new user with role-specific fields
+    const userData = {
       email: email.toLowerCase(),
       password: hashedPassword,
       name,
       role,
       walletAddress,
+      ...(role === UserRole.CUSTOMER ? { 
+        contactNumber: contactNumber || '',
+      } : {}),
+      ...(role === UserRole.TECHNICIAN ? { 
+        specialization, 
+        availability: availability !== undefined ? availability : true 
+      } : {})
     };
-
-    if (role === UserRole.CUSTOMER) {
-      userData.contactNumber = contactNumber || '';
-    }
-
-    if (role === UserRole.TECHNICIAN) {
-      userData.specialization = specialization || '';
-      userData.availability = availability !== undefined ? availability : true;
-    }
 
     const user = new User(userData);
     await user.save();
 
-    // Generate JWT
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' }
     );
 
-    // Respond
+    // Send formatted response with role-specific data
     res.status(201).json(formatUserResponse(user, token));
-    
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ 
       message: error instanceof Error ? error.message : 'Registration failed' 
     });
   }
-};
+}; 
 
 export const getTechnicians = async (req: Request, res: Response): Promise<void> => {
   try {
     // Fetch users with the 'Technician' role, excluding their passwords
-    const technicians = await Technicain.find().select('-password');
+    const technicians = await User.find({ role: UserRole.TECHNICIAN }).select('-password');
     res.status(200).json(technicians);
   } catch (error) {
     console.error('Get technicians error:', error);
@@ -218,9 +185,9 @@ export const updateTechnician = async (req: Request, res: Response): Promise<voi
   try {
     const { id } = req.params;
     const { name, email, contactNumber, specialization, availability, password } = req.body;
-console.log(id)
+
     // Find the technician to ensure they exist
-    const technician = await Technicain.findOne({ _id: id, role: UserRole.TECHNICIAN });
+    const technician = await User.findOne({ _id: id, role: UserRole.TECHNICIAN });
     if (!technician) {
       res.status(404).json({ message: 'Technician not found' });
       return;
@@ -234,7 +201,7 @@ console.log(id)
       specialization,
       availability,
     };
-console.log(updateData.availability)
+
     // If a new password is provided, validate and hash it
     if (password) {
       if (password.length < 6) {
@@ -246,7 +213,7 @@ console.log(updateData.availability)
     }
 
     // Perform the update
-    const updatedTechnician = await Technicain.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
+    const updatedTechnician = await User.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
 
     if (!updatedTechnician) {
       res.status(404).json({ message: 'Failed to update technician' });
@@ -268,7 +235,7 @@ console.log(updateData.availability)
 
 // Delete technician
 export const deleteTechnician = async (req: Request, res: Response) => {
-  console.log(req.params.id)
+  console.log("three controls")
   try {
     const deleted = await Technicain.findByIdAndDelete(req.params.id);
     if (!deleted) {

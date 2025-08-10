@@ -36,6 +36,42 @@
       "artifacts": [
         "Lock"
       ]
+    },
+    "D:\\chainrepair-mobile-management\\backend\\contracts\\Payment.sol": {
+      "lastModificationDate": 1754835559940,
+      "contentHash": "51d6ee53716280cd85474cb52cf514a4",
+      "sourceName": "contracts/Payment.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "Payment"
+      ]
     }
   }
 }

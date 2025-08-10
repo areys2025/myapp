@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import invoicesItem from '../models/invoiceModel'; '../models/invoiceModel';
 import expenses from '../models/expenseModel';
-
+import userModel from '../models/user.model';
 
 import { sendInvoiceEmail } from '../config/sendInvoiceEmail';
 
@@ -23,6 +23,36 @@ export const createInvoice = async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Error creating invoice' });
   }
 };
+
+export const sendInvoiceToEmail = async (req: Request, res: Response) => {
+  try {
+    const invoice = await invoicesItem.findById(req.params.id);
+    if (!invoice) {
+      return res.status(404).json({ message: 'Invoice not found' });
+    }
+
+    // Get customer email
+    let customerEmail = invoice?.customer?.email;
+    if (!customerEmail && invoice.customerId) {
+      const customer = await userModel.findById(invoice.customerId);
+      customerEmail = customer?.email || '';
+    }
+
+    if (!customerEmail) {
+      return res.status(400).json({ message: 'No customer email found' });
+    }
+
+    // Send email
+    await sendInvoiceEmail(customerEmail, invoice);
+
+    res.json({ message: 'Invoice sent successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error sending invoice' });
+  }
+};
+
+
 
 export const getAllInvoices = async (req: Request, res: Response) => {
   try {

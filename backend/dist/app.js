@@ -69,6 +69,7 @@ app.use('/api/forgot-password', user_routes_4.default);
 app.use('/api/feedback', feedback_routes_1.default);
 app.use('/api/repairs/:customerId', repair_routes_2.default);
 app.use('/api/repairs', repair_routes_1.default);
+app.use('/invoices', invoiceRoutes_1.default);
 app.use('/api/invoices', invoiceRoutes_1.default);
 app.use('/api/invoices', invoiceRoutes_2.default);
 app.use('/api/invoices/:id', expenseRoutes_1.default);

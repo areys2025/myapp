@@ -100,6 +100,7 @@ app.use('/api/feedback', feedbackroutes);
 
 app.use('/api/repairs/:customerId', getRepairById)
 app.use('/api/repairs', repairRoutes);
+app.use('/invoices', invoiceRoutes);
 
 app.use('/api/invoices',invoiceRoutes)
 app.use( '/api/invoices',getAllInvoices)

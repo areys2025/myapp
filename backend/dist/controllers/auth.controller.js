@@ -42,7 +42,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = __importStar(require("../models/user.model"));
 const ethers_1 = require("ethers");
 const Technicain_1 = __importDefault(require("../models/Technicain"));
-const logEvent_1 = require("../config/logEvent");
 // Helper function to format user response based on role
 const formatUserResponse = (user, token) => {
     // Base user data that all roles share
@@ -50,7 +49,6 @@ const formatUserResponse = (user, token) => {
         id: user._id.toString(),
         name: user.name,
         email: user.email,
-        contactNumber: user.contactNumber,
         role: user.role,
         walletAddress: user.walletAddress
     };
@@ -84,29 +82,22 @@ const formatUserResponse = (user, token) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        if (!email || !password) {
-            res.status(400).json({ message: 'Email and password are required' });
-            return;
-        }
+        // Find user by email
         const user = await user_model_1.default.findOne({ email: email.toLowerCase() });
         if (!user) {
             res.status(401).json({ message: 'Invalid credentials' });
             return;
         }
-        // Reject login if the user is a MetaMask-only user
-        if (!user.password) {
-            res.status(403).json({ message: 'This user is registered with MetaMask. Please sign in using MetaMask.' });
-            return;
-        }
+        // Verify password
         const isValidPassword = await bcryptjs_1.default.compare(password, user.password);
         if (!isValidPassword) {
             res.status(401).json({ message: 'Invalid credentials' });
             return;
         }
-        // Optional: Log login event
-        await (0, logEvent_1.logEvent)('User login', email, user.role, { userInfo: user.id, name: user.name });
+        // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'your_jwt_secret_key_here', { expiresIn: '24h' });
-        res.status(200).json(formatUserResponse(user, token));
+        // Send formatted response with role-specific data
+        res.json(formatUserResponse(user, token));
     }
     catch (error) {
         console.error('Login error:', error);
@@ -117,7 +108,7 @@ exports.login = login;
 const register = async (req, res) => {
     try {
         const { email, password, name, role, walletAddress, contactNumber, specialization, availability } = req.body;
-        // Check if user already exists (by email or walletAddress)
+        // Check if user already exists
         const existingUser = await user_model_1.default.findOne({
             $or: [
                 { email: email.toLowerCase() },
@@ -128,37 +119,23 @@ const register = async (req, res) => {
             res.status(400).json({ message: 'User already exists with this email or wallet address' });
             return;
         }
-        // At least one of password or walletAddress must be provided
-        if (!password && !walletAddress) {
-            res.status(400).json({ message: 'Either password or wallet address is required for registration' });
-            return;
-        }
-        // Hash the password if provided
-        let hashedPassword = '';
-        if (password) {
-            const salt = await bcryptjs_1.default.genSalt(10);
-            hashedPassword = await bcryptjs_1.default.hash(password, salt);
-        }
-        // Prepare user data
-        const userData = {
-            email: email.toLowerCase(),
-            password: hashedPassword,
-            name,
+        // Hash password
+        const salt = await bcryptjs_1.default.genSalt(10);
+        const hashedPassword = await bcryptjs_1.default.hash(password, salt);
+        // Create new user with role-specific fields
+        const userData = Object.assign(Object.assign({ email: email.toLowerCase(), password: hashedPassword, name,
             role,
-            walletAddress,
-        };
-        if (role === user_model_1.UserRole.CUSTOMER) {
-            userData.contactNumber = contactNumber || '';
-        }
-        if (role === user_model_1.UserRole.TECHNICIAN) {
-            userData.specialization = specialization || '';
-            userData.availability = availability !== undefined ? availability : true;
-        }
+            walletAddress }, (role === user_model_1.UserRole.CUSTOMER ? {
+            contactNumber: contactNumber || '',
+        } : {})), (role === user_model_1.UserRole.TECHNICIAN ? {
+            specialization,
+            availability: availability !== undefined ? availability : true
+        } : {}));
         const user = new user_model_1.default(userData);
         await user.save();
-        // Generate JWT
+        // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'your_jwt_secret_key_here', { expiresIn: '24h' });
-        // Respond
+        // Send formatted response with role-specific data
         res.status(201).json(formatUserResponse(user, token));
     }
     catch (error) {
@@ -172,7 +149,7 @@ exports.register = register;
 const getTechnicians = async (req, res) => {
     try {
         // Fetch users with the 'Technician' role, excluding their passwords
-        const technicians = await Technicain_1.default.find().select('-password');
+        const technicians = await user_model_1.default.find({ role: user_model_1.UserRole.TECHNICIAN }).select('-password');
         res.status(200).json(technicians);
     }
     catch (error) {
@@ -202,9 +179,8 @@ const updateTechnician = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, email, contactNumber, specialization, availability, password } = req.body;
-        console.log(id);
         // Find the technician to ensure they exist
-        const technician = await Technicain_1.default.findOne({ _id: id, role: user_model_1.UserRole.TECHNICIAN });
+        const technician = await user_model_1.default.findOne({ _id: id, role: user_model_1.UserRole.TECHNICIAN });
         if (!technician) {
             res.status(404).json({ message: 'Technician not found' });
             return;
@@ -217,7 +193,6 @@ const updateTechnician = async (req, res) => {
             specialization,
             availability,
         };
-        console.log(updateData.availability);
         // If a new password is provided, validate and hash it
         if (password) {
             if (password.length < 6) {
@@ -228,7 +203,7 @@ const updateTechnician = async (req, res) => {
             updateData.password = await bcryptjs_1.default.hash(password, salt);
         }
         // Perform the update
-        const updatedTechnician = await Technicain_1.default.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
+        const updatedTechnician = await user_model_1.default.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
         if (!updatedTechnician) {
             res.status(404).json({ message: 'Failed to update technician' });
             return;
@@ -248,7 +223,7 @@ const updateTechnician = async (req, res) => {
 exports.updateTechnician = updateTechnician;
 // Delete technician
 const deleteTechnician = async (req, res) => {
-    console.log(req.params.id);
+    console.log("three controls");
     try {
         const deleted = await Technicain_1.default.findByIdAndDelete(req.params.id);
         if (!deleted) {

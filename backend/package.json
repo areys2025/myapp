@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Backend for ChainRepair Mobile Management",
   "main": "dist/app.js",
-"scripts": {
-  "render-build": "tsc",
-  "start": "node dist/app.js",
-  "dev": "node src/app.ts",
-  "build": "tsc",
-  "test": "jest",
-  "deploy": "rimraf backend/dist && npm run build && move dist backend && cd backend && tsc && cd .. && git add . && git commit -m \"Update build\" && git push"
-},
+  "scripts": {
+    "render-build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "node src/app.ts",
+    "build": "tsc",
+    "test": "jest",
+    "deploy": "rimraf backend/dist && npm run build && move dist backend && cd backend && tsc && cd .. && git add . && git commit -m \"Update build\" && git push"
+  },
   "dependencies": {
     "@types/axios": "^0.14.4",
     "@types/bcrypt": "^5.0.2",
@@ -20,7 +20,7 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^16.0.3",
-    "ethers": "^6.14.4",
+    "ethers": "^6.15.0",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
@@ -36,9 +36,15 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.11",
     "@types/nodemailer": "^6.4.17",
-    "hardhat": "^2.25.0",
+    "hardhat": "^2.26.2",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
