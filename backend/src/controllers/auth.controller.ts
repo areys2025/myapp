@@ -81,8 +81,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 if(token){
   await logEvent(
   'User login',
-  req.user?.email,
-  req.user?.role,
+  user?.email,
+  user?.role,
   { userInfo: user._id, name: user.name }
 );
 }
@@ -290,8 +290,8 @@ export const metamaskLogin = async (req: Request, res: Response) => {
 if(token){
   await logEvent(
   'User login',
-  req.user?.email,
-  req.user?.role,
+  user?.email,
+  user?.role,
   { userInfo: user._id, name: user.name }
 );
 }
