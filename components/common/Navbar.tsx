@@ -24,8 +24,8 @@ const logdata:any=[
   user?.role,
   { userInfo: _id, name: name }
 ]
-
-api.storeSyslogs(logdata)     
+console.log(logdata)
+// api.storeSyslogs(logdata)     
  logout();
     navigate('/login');
   };
