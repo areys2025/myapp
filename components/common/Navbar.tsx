@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Button from './Button';
 import { APP_NAME } from '../../constants'; // Using .tsx implicitly
 import { UserRole } from '../../types';
-
+import { useApi } from '@/hooks/useApi';
 interface NavbarProps {
   toggleSidebar?: () => void; // Optional: for mobile sidebar toggle
 }
@@ -12,17 +12,28 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
+const api=useApi()
   const handleLogout = () => {
-    logout();
+
+const name=user?.name
+const _id="none"
+
+const logdata:any=[
+  'User logout',
+  user?.email,
+  user?.role,
+  { userInfo: _id, name: name }
+]
+
+api.storeSyslogs(logdata)     
+ logout();
     navigate('/login');
   };
 
-  // Helper function to ensure proper role display
+// Helper function to ensure proper role display
   const formatRole = (role: UserRole) => {
     return role as string; // UserRole enum values are already in proper format
   };
-
   return (
     <nav className="bg-neutral-dark shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

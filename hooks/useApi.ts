@@ -172,10 +172,17 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
       const response = await instance.put<InventoryItem>(`/inventory/${_id}`, InvData);
       return response.data;
     },
+
    storeInv: async (InvData: any): Promise<InventoryItem> => {
       const response = await instance.post<InventoryItem>('/inventory', InvData);
       return response.data;
     },
+
+   storeSyslogs: async (logdata: any): Promise<any> => {
+      const response = await instance.post<InventoryItem>('/system-logs', logdata);
+      return response.data;
+    },
+
     getRepairTickets: async (): Promise<RepairTicket[]> => {
       const res = await instance.get('/repairs');
       if (!Array.isArray(res.data)) {
