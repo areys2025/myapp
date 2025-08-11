@@ -42,6 +42,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = __importStar(require("../models/user.model"));
 const ethers_1 = require("ethers");
 const Technicain_1 = __importDefault(require("../models/Technicain"));
+const logEvent_1 = require("../config/logEvent");
 // Helper function to format user response based on role
 const formatUserResponse = (user, token) => {
     // Base user data that all roles share
@@ -80,6 +81,7 @@ const formatUserResponse = (user, token) => {
     }
 };
 const login = async (req, res) => {
+    var _a, _b;
     try {
         const { email, password } = req.body;
         // Find user by email
@@ -96,6 +98,9 @@ const login = async (req, res) => {
         }
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'your_jwt_secret_key_here', { expiresIn: '24h' });
+        if (token) {
+            await (0, logEvent_1.logEvent)('User login', (_a = req.user) === null || _a === void 0 ? void 0 : _a.email, (_b = req.user) === null || _b === void 0 ? void 0 : _b.role, { userInfo: user._id, name: user.name });
+        }
         // Send formatted response with role-specific data
         res.json(formatUserResponse(user, token));
     }
@@ -240,6 +245,7 @@ const deleteTechnician = async (req, res) => {
 };
 exports.deleteTechnician = deleteTechnician;
 const metamaskLogin = async (req, res) => {
+    var _a, _b;
     try {
         const { address, signature, message } = req.body;
         if (!address || !signature || !message) {
@@ -256,6 +262,9 @@ const metamaskLogin = async (req, res) => {
             return res.status(404).json({ message: 'User not found for this wallet. Please register first.' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '24h' });
+        if (token) {
+            await (0, logEvent_1.logEvent)('User login', (_a = req.user) === null || _a === void 0 ? void 0 : _a.email, (_b = req.user) === null || _b === void 0 ? void 0 : _b.role, { userInfo: user._id, name: user.name });
+        }
         res.status(200).json({
             token,
             user: {

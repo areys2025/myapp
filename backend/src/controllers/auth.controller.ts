@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import User, { UserRole } from '../models/user.model';
 import { ethers } from 'ethers';
 import Technicain from '../models/Technicain';
+import { logEvent } from '../config/logEvent';
 // Helper function to format user response based on role
 const formatUserResponse = (user: any, token: string) => {
   // Base user data that all roles share
@@ -77,7 +78,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' }
     );
-
+if(token){
+  await logEvent(
+  'User login',
+  req.user?.email,
+  req.user?.role,
+  { userInfo: user._id, name: user.name }
+);
+}
     // Send formatted response with role-specific data
     res.json(formatUserResponse(user, token));
   } catch (error) {
@@ -279,7 +287,14 @@ export const metamaskLogin = async (req: Request, res: Response) => {
       process.env.JWT_SECRET || 'secret_key',
       { expiresIn: '24h' }
     );
-
+if(token){
+  await logEvent(
+  'User login',
+  req.user?.email,
+  req.user?.role,
+  { userInfo: user._id, name: user.name }
+);
+}
     res.status(200).json({
       token,
       user: {
