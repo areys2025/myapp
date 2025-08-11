@@ -27,7 +27,6 @@ export interface allData extends User , Customer{
 
 }
 export interface Customer extends User {
-  deviceType: string;
 }
 export interface Supplier {
   id: string;
@@ -144,7 +143,6 @@ export interface Admin {
   availability?: boolean;
   contactNumber?: string;
   walletAddress?: string;
-  deviceType:string;
 }
 export interface LogEntry {
   id: string;               

@@ -113,7 +113,6 @@ updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled
     },
 
     getTAdmins: async (): Promise<Admin[]> => {
-      
       const res = await instance.get('/getAdmins');
       if (!Array.isArray(res.data)) {
         throw new Error('Expected an array of admins');
@@ -128,7 +127,6 @@ updatePurchaseOrderStatus:async (itemId: string, status: 'Received' | 'Cancelled
         contactNumber: adm.contactNumber,
         walletAddress: adm.walletAddress,
         _id: adm._id, status: adm.status,
-        assignedTechnicianId: adm.assignedTechnicianId
       }));
     },
 

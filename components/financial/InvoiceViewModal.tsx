@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RepairTicket, Customer } from '../../types';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import { APP_NAME } from '../../constants';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
+import Alert from '../common/Alert';
 
 interface InvoiceViewModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ const instance = axios.create({
 
 const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({ isOpen, onClose, invoice }) => {
   const [customer, setCustomer] = React.useState<Customer | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (isOpen && invoice.customerId) {
@@ -46,6 +49,9 @@ const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({ isOpen, onClose, in
   };
 
 const handleEmailInvoice = async () => {
+    setError(null);
+  setSuccess(null);
+
   try {
 await instance.post(`/invoices/send`, {
   billedTo: {
@@ -62,9 +68,9 @@ repairDetails: [
     { description: `Repair for: ${invoice.deviceInfo}`, amount: invoice.cost }
   ],  totalDue: invoice.cost,
 });
-    alert('Invoice sent to customer!');
+    setSuccess('Invoice sent to customer!');
   } catch (err: any) {
-    alert(err?.response?.data?.message || 'Failed to send invoice.');
+    setError(err?.response?.data?.message || 'Failed to send invoice.');
   }
 };
 
@@ -96,7 +102,9 @@ repairDetails: [
           <h2 className="text-xl font-bold text-primary">{APP_NAME}</h2>
           <p className="text-neutral-600">Repair Invoice</p>
         </div>
-
+        {error && <Alert type="error" message={error} onClose={() => setError(null)} className="mb-4" />}
+        {success && <Alert type="success" message={success} className="mb-4" />}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="font-semibold mb-1">Billed To:</h3>

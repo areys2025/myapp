@@ -105,6 +105,7 @@ const AdminForm: React.FC<AdminFormProps> = ({ currentAdmin, onSuccess }) => {
                 setSuccess('Admin updated successfully.');
             } else {
                 const createdAdmin = await api.createdAdmin(adminData);
+                api.registerUser(adminData)
                 setSuccess(`Registration successful! Welcome, ${createdAdmin.name}.`);
                 setTimeout(() => navigate('/dashboard'), 2000);
             }

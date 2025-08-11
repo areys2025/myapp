@@ -136,17 +136,9 @@ const handlePasswordChange = async (e: React.FormEvent) => {
         </form>
       </Card>
 
-      <Card title="Change Password">
-        <form onSubmit={handlePasswordChange} className="space-y-4">
-          <Input label="Current Password" id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
-          <Input label="New Password" id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
-          <Input label="Confirm New Password" id="confirmNewPassword" type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} required />
-          <Button type="submit" isLoading={isLoading} disabled={isLoading}>Change Password</Button>
-        </form>
-      </Card>
-
+   
       {user.walletAddress && (
-        <Card title="Blockchain Identity (Simulated)">
+        <Card title="Blockchain Identity">
             <p className="text-sm text-neutral-DEFAULT">Your simulated blockchain wallet address:</p>
             <p className="font-mono text-primary break-all">{user.walletAddress}</p>
             <p className="text-xs text-neutral-DEFAULT mt-2">This address is used for simulated secure login and transactions within the system.</p>
@@ -158,18 +150,26 @@ const handlePasswordChange = async (e: React.FormEvent) => {
         <div className="mt-4 space-y-2">
             <div>
                 <label className="flex items-center">
-                    <input type="checkbox" className="form-checkbox h-5 w-5 text-primary rounded" defaultChecked/>
+                    <input type="checkbox" checked className="form-checkbox h-5 w-5 text-primary rounded" defaultChecked/>
                     <span className="ml-2 text-neutral-dark">Email notifications for repair status</span>
                 </label>
             </div>
             <div>
                 <label className="flex items-center">
-                    <input type="checkbox" className="form-checkbox h-5 w-5 text-primary rounded" />
+                    <input type="checkbox"  className="form-checkbox h-5 w-5 text-primary rounded" />
                     <span className="ml-2 text-neutral-dark">SMS notifications for urgent updates</span>
                 </label>
             </div>
              <Button className="mt-2" size="sm" variant="ghost">Save Preferences</Button>
         </div>
+      </Card>
+   <Card title="Change Password">
+        <form onSubmit={handlePasswordChange} className="space-y-4">
+          <Input label="Current Password" id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+          <Input label="New Password" id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+          <Input label="Confirm New Password" id="confirmNewPassword" type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} required />
+          <Button type="submit" isLoading={isLoading} disabled={isLoading}>Change Password</Button>
+        </form>
       </Card>
 
     </div>

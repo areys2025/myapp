@@ -32,8 +32,13 @@ const feedback = async () => {
       setCompletedTas(numOfComplt);
       console.log(numOfComplt)
      const techRateAvg=filteredTechRate.reduce((sum: any, inv: { rating: any; }) => sum + (inv.rating || 0), 0).toFixed(2)/filteredTechRate.length
-    setFeedbackRate(techRateAvg);    
-
+    if(isNaN(techRateAvg))
+    {
+           setFeedbackRate(0.001);    
+    }
+    else{
+         setFeedbackRate(techRateAvg);    
+    }
 setActTsk(numOfActvTasks)
     }
   useEffect(() => {
@@ -45,8 +50,8 @@ setActTsk(numOfActvTasks)
       <h1 className="text-3xl font-bold text-neutral-dark">Technician Dashboard</h1>
       <p className="text-neutral-DEFAULT">Welcome back, {user?.name}!</p>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card title="My Stats (Placeholder)" className="bg-primary text-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+        <Card title="My Stats " className="bg-primary ">
           <div className="space-y-2">
             <p>Active Tasks: <span className="font-bold">{actTsk}</span></p>
             <p>Completed Today: <span className="font-bold">{completedTas}</span></p>

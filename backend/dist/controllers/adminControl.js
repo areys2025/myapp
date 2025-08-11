@@ -56,16 +56,6 @@ const registerAdmin = async (req, res) => {
         if (existingUser)
             return res.status(400).json({ message: 'Email already registered' });
         const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-        // Save to users collection
-        const newUser = new user_model_1.default({
-            name,
-            email,
-            password: hashedPassword,
-            contactNumber,
-            walletAddress,
-            role: user_model_1.UserRole.MANAGER, // you may want to update this if it's wrong
-        });
-        await newUser.save();
         // Save to admins collection
         const admin = await Admin_1.default.create({
             name,

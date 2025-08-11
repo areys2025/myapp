@@ -158,7 +158,7 @@ const handleBlockchainLogin = async () => {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-white text-neutral-DEFAULT">
-                Or connect with (Simulated Blockchain Login)
+                Or connect with (Blockchain Login)
               </span>
             </div>
           </div>

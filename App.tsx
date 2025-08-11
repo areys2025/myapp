@@ -55,7 +55,7 @@ const App: React.FC = () => {
         <Route path="/assigned-tasks" element={user && user.role === UserRole.TECHNICIAN ? <AssignedTasksPage key={user.id} /> : <Navigate to="/login" />} />
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/assigned-tasks" element={user && user.role === UserRole.TECHNICIAN ? <AssignedTasksPage key={user.id} /> : <Navigate to="/login" />} />
-        <Route path="/usedRep" element={user && user.role === UserRole.TECHNICIAN ? <UsedPartsForm key={user.id} /> : <Navigate to="/login" />} />
+        <Route path="/usedRep" element={user && user.role === UserRole.TECHNICIAN ? <UsedPartsForm key={user.id} inventoryItems={[]} /> : <Navigate to="/login" />} />
 
         {/* Manager Routes */}
         <Route path="/manage-repairs" element={user && user.role === UserRole.MANAGER ? <ManageRepairsPage key={user.id} /> : <Navigate to="/login" />} />

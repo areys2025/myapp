@@ -162,7 +162,7 @@ const tx = await signer.sendTransaction({
 
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Blockchain Payment (Simulated)">
+    <Modal isOpen={isOpen} onClose={onClose} title="Blockchain Payment">
       <div className="space-y-4">
         <p className="text-neutral-DEFAULT">
           You are about to pay for repair ticket <span className="font-semibold">{ticket.id}</span> for device <span className="font-semibold">{ticket.deviceInfo}</span>.

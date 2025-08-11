@@ -104,5 +104,5 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { path: '/financials', label: 'Finance', icon: <CreditCardIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
   
   { path: '/reports', label: 'Reports', icon: <ChartBarIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
-  { path: '/settings', label: 'Settings', icon: <CogIcon className="w-5 h-5" />, roles: [UserRole.MANAGER, UserRole.TECHNICIAN, UserRole.CUSTOMER] }, // Example
+  { path: '/settings', label: 'My profile', icon: <CogIcon className="w-5 h-5" />, roles: [UserRole.MANAGER, UserRole.TECHNICIAN, UserRole.CUSTOMER] }, // Example
 ];

@@ -32,17 +32,7 @@ console.log (name+" , "+email +" , "+ password +" , " +contactNumber+" , " +wall
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save to users collection
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      contactNumber,
-      walletAddress,
-      role: UserRole.MANAGER, // you may want to update this if it's wrong
-    });
 
- await newUser.save();
 
 
     // Save to admins collection

@@ -19,6 +19,7 @@ const forgotPassword = async (req, res) => {
         user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
         await user.save();
         const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
+        console.log(token);
         await mailer_1.transporter.sendMail({
             to: user.email,
             subject: 'Reset your password',
