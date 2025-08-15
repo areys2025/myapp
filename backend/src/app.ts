@@ -10,7 +10,6 @@ import updateRepairByTicketId from './routes/repair.routes'
 import updateRepair from './routes/repair.routes'
 
 
-
 import logRoutes from './routes/log.routes';
 import invoiceRoutes from './routes/invoiceRoutes'
 import PurchaseOrder from './models/PurchaseOrder';

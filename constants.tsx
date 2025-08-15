@@ -4,6 +4,8 @@ import { UserRole, NavItem } from './types';
 
 export const APP_NAME = "ChainRepair Mobile Management";
 
+// >>>>>>>>>>>>>>
+
 // SVG Icons (Heroicons style, simplified)
 export const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
@@ -41,6 +43,97 @@ export const EditIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path d="M17.414 2.586a2 2 0 010 2.828l-1.793 1.793-2.828-2.828 1.793-1.793a2 2 0 012.828 0zM2 13.586l7.793-7.793 2.828 2.828L4.828 16.414H2v-2.828z" />
   </svg>
 );
+
+export const NotificationIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 20 20"
+    {...props}
+  >
+    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zm0 16a2 2 0 01-2-2h4a2 2 0 01-2 2z" />
+  </svg>
+);
+
+
+export const JobHistoryIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    {/* Document outline */}
+    <path d="M6 2a2 2 0 00-2 2v16a2 2 0 002 2h6.5A6.5 6.5 0 0020 15.5V8l-6-6H6z" />
+    {/* Clock inside document */}
+    <circle cx="16.5" cy="16.5" r="5" />
+    <path d="M16.5 14v2.5l1.5 1.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+  </svg>
+);
+
+export const RegisterPartsIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    {/* Gear shape */}
+    <path d="M19.4 13a7.952 7.952 0 000-2l2.1-1.6a.5.5 0 00.1-.6l-2-3.5a.5.5 0 00-.6-.2l-2.5 1a7.988 7.988 0 00-1.7-1l-.4-2.7A.5.5 0 0014.9 2h-4a.5.5 0 00-.5.4l-.4 2.7a7.988 7.988 0 00-1.7 1l-2.5-1a.5.5 0 00-.6.2l-2 3.5a.5.5 0 00.1.6l2.1 1.6a7.952 7.952 0 000 2l-2.1 1.6a.5.5 0 00-.1.6l2 3.5a.5.5 0 00.6.2l2.5-1a7.988 7.988 0 001.7 1l.4 2.7a.5.5 0 00.5.4h4a.5.5 0 00.5-.4l.4-2.7a7.988 7.988 0 001.7-1l2.5 1a.5.5 0 00.6-.2l2-3.5a.5.5 0 00-.1-.6L19.4 13zM12 15a3 3 0 110-6 3 3 0 010 6z"/>
+    {/* Plus sign overlay */}
+    <path d="M22 19v-2h-2v-2h-2v2h-2v2h2v2h2v-2h2z"/>
+  </svg>
+);
+
+export const ProfileIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    {/* Head */}
+    <circle cx="12" cy="8" r="4" />
+    {/* Shoulders */}
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
+  </svg>
+);
+export const HistoryIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    {...props}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 6v6h4.5m4.5 0a9 9 0 11-3.107-6.743"
+    />
+  </svg>
+);
+
+
+export const RegisterDeviceIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    {/* Device outline */}
+    <rect x="6" y="3" width="12" height="18" rx="2" ry="2" />
+    {/* Plus sign */}
+    <path d="M12 8v4m-2-2h4" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+    {/* Small wrench icon in corner */}
+    <path d="M17.657 16.657a4 4 0 01-5.657 0l-.707-.707 2.121-2.121.707.707a2 2 0 002.828 0l.708-.707a4 4 0 010 5.656z" />
+  </svg>
+);
+
+
+// >>>>>>>>>>>>>>>>>>>>>
 
 
 
@@ -88,11 +181,14 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { path: '/dashboard', label: 'Dashboard', icon: <HomeIcon className="w-5 h-5" />, roles: [UserRole.CUSTOMER, UserRole.TECHNICIAN, UserRole.MANAGER] },
   // Customer
   { path: '/my-repairs', label: 'My Repairs', icon: <WrenchScrewdriverIcon className="w-5 h-5" />, roles: [UserRole.CUSTOMER] },
-  { path: '/request-repair', label: 'New Repair', icon: <WrenchScrewdriverIcon className="w-5 h-5" />, roles: [UserRole.CUSTOMER] },
+  { path: '/request-repair', label: 'New Repair', icon: <RegisterDeviceIcon className="w-5 h-5" />, roles: [UserRole.CUSTOMER] },
+  {path:'/CustomerNotificationsPage',label: 'Notifications',icon:<NotificationIcon className='w-5 h-5'/> ,roles:[UserRole.CUSTOMER]},
+
   // Technician
   { path: '/assigned-tasks', label: 'Assigned Tasks', icon: <WrenchScrewdriverIcon className="w-5 h-5" />, roles: [UserRole.TECHNICIAN] },
    { path: '/inventory', label: 'view Parts Stock', icon: <ChartBarIcon className="w-5 h-5" />, roles: [UserRole.TECHNICIAN] },
-   { path: '/usedRep', label: 'used parts', icon: <ChartBarIcon className="w-5 h-5" />, roles: [UserRole.TECHNICIAN] },
+   { path: '/usedRep', label: 'used parts', icon: <RegisterPartsIcon className="w-5 h-5" />, roles: [UserRole.TECHNICIAN] },
+    { path: '/RepairHistoryPage', label: 'Job History', icon: <HistoryIcon className="w-5 h-5" />, roles: [UserRole.TECHNICIAN] },
 
   // Manager
   { path: '/manage-repairs', label: 'All Repairs', icon: <WrenchScrewdriverIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
@@ -102,7 +198,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { path: "/views-Logs", label: 'View Logs', icon: <SystemLogsIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
   {path:"/suppliers" , label:"Manage suppliers" , icon:<SuppliersIcon className='w-5 h-5'/>,roles:[UserRole.MANAGER]},
   { path: '/financials', label: 'Finance', icon: <CreditCardIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
-  
+
   { path: '/reports', label: 'Reports', icon: <ChartBarIcon className="w-5 h-5" />, roles: [UserRole.MANAGER] },
-  { path: '/settings', label: 'My profile', icon: <CogIcon className="w-5 h-5" />, roles: [UserRole.MANAGER, UserRole.TECHNICIAN, UserRole.CUSTOMER] }, // Example
+  { path: '/settings', label: 'My profile', icon: <ProfileIcon className="w-5 h-5" />, roles: [UserRole.MANAGER, UserRole.TECHNICIAN, UserRole.CUSTOMER] }, // Example
 ];

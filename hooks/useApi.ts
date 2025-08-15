@@ -178,10 +178,10 @@ deleteAdmin: (id: string) => instance.delete(`/regisadmin/${id}`),
       return response.data;
     },
 
-   storeSyslogs: async (logdata: any): Promise<any> => {
-      const response = await instance.post<InventoryItem>('/system-logs', logdata);
-      return response.data;
-    },
+  //  storeSyslogs: async (logdata: any): Promise<any> => {
+  //     const response = await instance.post<InventoryItem>('/system-logs', logdata);
+  //     return response.data;
+  //   },
 
     getRepairTickets: async (): Promise<RepairTicket[]> => {
       const res = await instance.get('/repairs');

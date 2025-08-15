@@ -10,6 +10,7 @@ const express_1 = __importDefault(require("express"));
 const forgot_password_1 = require("../controllers/forgot-password"); // adjust path
 const router = express_1.default.Router();
 const forgot_password_2 = require("../controllers/forgot-password");
+const Notifications_1 = require("../controllers/Notifications");
 // General Auth Routes
 router.post('/login', auth_controller_1.login);
 router.post('/register', auth_controller_1.register); // Handles registration for all roles
@@ -20,6 +21,7 @@ router.get('/technicians', auth_controller_1.getTechnicians);
 router.get('/technicians/:id', auth_controller_1.getTechnicianById);
 router.put('/technicians/:id', auth_controller_1.updateTechnician);
 router.delete('/technicians/:id', auth_controller_1.deleteTechnician);
+router.get("/notifications/customer/:id", Notifications_1.getCustomerNotifications);
 router.post('/forgot-password', forgot_password_1.forgotPassword);
 router.post('/reset-password/:token', forgot_password_2.resetPassword);
 // WARNING: This route includes passworhds - FOR DEVELOPMENT ONLY

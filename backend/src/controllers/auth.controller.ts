@@ -262,39 +262,48 @@ export const deleteTechnician = async (req: Request, res: Response) => {
 
 export const metamaskLogin = async (req: Request, res: Response) => {
   try {
-    const { address, signature, message } = req.body;
+    const { address, signature, message, expectedRole } = req.body;
 
     if (!address || !signature || !message) {
       return res.status(400).json({ message: 'Missing MetaMask login data' });
     }
 
+    // Verify signature
     const recovered = ethers.verifyMessage(message, signature);
-    console.log('Recovered address:', recovered);
-    console.log('Provided address:', address);
-
     if (recovered.toLowerCase() !== address.toLowerCase()) {
       return res.status(401).json({ message: 'Invalid signature' });
     }
 
-    let user = await User.findOne({ walletAddress: address });
-
+    // Find user by wallet address
+    const user = await User.findOne({ walletAddress: address });
     if (!user) {
-      return res.status(404).json({ message: 'User not found for this wallet. Please register first.' });
+      return res.status(404).json({
+        message: 'User not found for this wallet. Please register first.'
+      });
     }
 
+    // ✅ Enforce role restriction for MetaMask login
+    // If you want only customers to log in via MetaMask:
+    if (expectedRole && user.role !== expectedRole) {
+      return res.status(403).json({
+        message: `This account is registered as a ${user.role} and cannot log in here.`
+      });
+    }
+
+    // Generate token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'secret_key',
       { expiresIn: '24h' }
     );
-if(token){
-  await logEvent(
-  'User login',
-  user?.email,
-  user?.role,
-  { userInfo: user._id, name: user.name }
-);
-}
+
+    if (token) {
+      await logEvent('User login', user?.email, user?.role, {
+        userInfo: user._id,
+        name: user.name
+      });
+    }
+
     res.status(200).json({
       token,
       user: {
@@ -310,6 +319,7 @@ if(token){
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 

@@ -19,6 +19,16 @@ const ResetPasswordPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirectCountdown, setRedirectCountdown] = useState(5);
 
+  const tokens = localStorage.getItem('token');
+
+  const Pinstance = axios.create({
+    baseURL: 'https://myapp-ph0r.onrender.com/api/auth',
+    headers: {
+      Authorization: token ? `Bearer ${tokens}` : '',
+    },
+  });
+
+
   // Auto-redirect on success
   useEffect(() => {
     if (message?.type === 'success') {
@@ -46,7 +56,8 @@ const ResetPasswordPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const res = await axios.post<User>(`https://myapp-ph0r.onrender.com/api/reset-password/${token}`, {
+
+      const res = await Pinstance.post<User>(`/reset-password/${token}`, {
         password,
         confirmPassword,
       });

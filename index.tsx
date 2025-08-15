@@ -18,7 +18,6 @@ root.render(
   <AuthProvider>
     <App />
             <Footer/>
-
   </AuthProvider>
 </BrowserRouter>
 

@@ -8,8 +8,8 @@ import Spinner from '../common/Spinner';
 import Alert from '../common/Alert';
 import { useApi } from '@/hooks/useApi';
 import { ethers } from 'ethers';
-import { payByWaafiPay } from './paymentEvc.ts';
-// import {payByWaafiPays} from './paymentWaafi'
+// import { payByWaafiPay } from './paymentEvc.ts';
+import {payByWaafiPays} from './paymentWaafi'
 import { useAuth } from '@/contexts/AuthContext';
 interface BlockchainPaymentModalProps {
   isOpen: boolean;
@@ -39,25 +39,25 @@ const handleWaafiPayment = async () => {
   setErrorMessage(null);
 
   try {
-const number = user?.contactNumber?.toString() || '';
-// await payByWaafiPays({
-//   phone: number,
-//   amount: 0.001,
-//   invoiceId: '7896504',
-//   description: 'Test USD',
-// });
+// const number = user?.contactNumber?.toString() || '';
+const result =await payByWaafiPays({
+  phone: "252618827482",
+  amount: 0.001,
+  invoiceId: '7896504',
+  description: 'Test USD',
+});
 
-    const result = await payByWaafiPay({
-      phone: number,
-      amount:0.001,
-      merchantUid:"M0910291",
-      apiUserId: "1000416",
-      apiKey: "API-675418888AHX",
-      description: `Repair for ${ticket.deviceInfo}`,
-      invoiceId: ticket.TicketId,
-      referenceId: "12334"
-    });
-    if (!result.status) throw new Error(result.error);
+    // const result = await payByWaafiPay({
+    //   phone: number,
+    //   amount:0.001,
+    //   merchantUid:"M0910291",
+    //   apiUserId: "1000416",
+    //   apiKey: "API-675418888AHX",
+    //   description: `Repair for ${ticket.deviceInfo}`,
+    //   invoiceId: ticket.TicketId,
+    //   referenceId: "12334"
+    // });
+    // if (!result.status) throw new Error(result.error);
 
     const txId = `waafi-${Date.now()}`;
     await api.processBlockchainPayment(ticket.TicketId, amount, txId); // you may rename this method to processPayment()

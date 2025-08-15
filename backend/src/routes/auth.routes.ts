@@ -14,6 +14,7 @@ import express from 'express';
 import { forgotPassword } from '../controllers/forgot-password'; // adjust path
 const router = express.Router();
 import { resetPassword } from '../controllers/forgot-password';
+import { getCustomerNotifications } from "../controllers/Notifications";
 
 // General Auth Routes
 router.post('/login', login);
@@ -25,6 +26,7 @@ router.get('/technicians', getTechnicians);
 router.get('/technicians/:id', getTechnicianById);
 router.put('/technicians/:id', updateTechnician);
 router.delete('/technicians/:id', deleteTechnician);
+router.get("/notifications/customer/:id",getCustomerNotifications)
 
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:token', resetPassword);

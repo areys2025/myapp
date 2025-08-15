@@ -55,7 +55,6 @@ const LogTable: React.FC = () => {
 
   const handleFilter = () => {
     let filtered = [...logs];
-
     if (filterDate) {
       filtered = filtered.filter(log =>
         new Date(log.timestamp).toISOString().split('T')[0] === filterDate

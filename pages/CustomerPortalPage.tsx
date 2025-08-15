@@ -17,6 +17,8 @@ interface Repair {
 const CustomerPortalPage: React.FC = () => {
   const { user } = useAuth();
   const [recentRepairs, setRecentRepairs] = useState<Repair[]>([]);
+    const [showNotifications, setShowNotifications] = useState(false);
+
 const api=useApi();
   useEffect(() => {
     const fetchRecentRepairs = async () => {
@@ -35,6 +37,7 @@ console.log(recentRepairs)
 
     fetchRecentRepairs();
   }, []);
+  const latestRepairs = recentRepairs.slice(0, 3);
 
   return (
     <div className="space-y-6">
@@ -58,35 +61,35 @@ console.log(recentRepairs)
           </div>
         </Card>
     <Card title="Recent Activity">
-  {recentRepairs?.length > 0 ? (
-    <ul className="mt-3 space-y-2 text-sm text-neutral-700">
-      {recentRepairs.map((repair) => (
-        <li
-          key={repair.TicketId}
-          className="p-3 rounded-lg bg-neutral-100 flex flex-col sm:flex-row sm:items-center sm:justify-between"
-        >
-          <div>
-            <span className="font-semibold text-neutral-900">{repair.deviceInfo}</span>
-            <span className="ml-1">— Status updated to</span>{' '}
-            <span
-              className={`capitalize px-2 py-0.5 rounded-full text-xs font-medium ${
-                repair.status === 'completed'
-                  ? 'bg-green-100 text-green-700'
-                  : repair.status === 'In Progress'
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'bg-blue-100 text-blue-700'
-              }`}
-            >
-              {repair.status}
-            </span>
-          </div>
-          <div className="mt-2 sm:mt-0 text-xs text-neutral-500">
-            {new Date(repair.updatedAt).toLocaleDateString()}
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
+{recentRepairs?.length > 0 ? (
+  <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+    {recentRepairs.slice(-3).map((repair) => (
+      <li
+        key={repair.TicketId}
+        className="p-3 rounded-lg bg-neutral-100 flex flex-col sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div>
+          <span className="font-semibold text-neutral-900">{repair.deviceInfo}</span>
+          <span className="ml-1">— Status updated to</span>{' '}
+          <span
+            className={`capitalize px-2 py-0.5 rounded-full text-xs font-medium ${
+              repair.status === 'completed'
+                ? 'bg-green-100 text-green-700'
+                : repair.status === 'In Progress'
+                ? 'bg-yellow-100 text-yellow-700'
+                : 'bg-blue-100 text-blue-700'
+            }`}
+          >
+            {repair.status}
+          </span>
+        </div>
+        <div className="mt-2 sm:mt-0 text-xs text-neutral-500">
+          {new Date(repair.updatedAt).toLocaleDateString()}
+        </div>
+      </li>
+    ))}
+  </ul>
+) : (
     <div className="mt-3 text-sm text-neutral-600">
       <p>Your recent repair updates will appear here.</p>
       <ul className="mt-2 space-y-1">
@@ -96,6 +99,59 @@ console.log(recentRepairs)
     </div>
   )}
 </Card>
+{/* Notification Button */}
+      <div className="fixed top-4 right-4 z-50">
+        <button
+          onClick={() => setShowNotifications(!showNotifications)}
+          className="relative p-2 rounded-full bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
+          aria-label="Toggle notifications"
+        >
+          {/* Icon - you can swap for a bell icon if you want */}
+          <WrenchScrewdriverIcon className="w-6 h-6" />
+          {recentRepairs.length > 0 && (
+            <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+              {recentRepairs.length}
+            </span>
+          )}
+        </button>
+
+        {/* Notification popup */}
+        {showNotifications && (
+          <div className="mt-2 w-80 bg-white shadow-lg rounded-md border border-neutral-300 p-4">
+            <h2 className="text-lg font-semibold mb-2">Recent Repairs</h2>
+            {latestRepairs.length > 0 ? (
+              latestRepairs.map((repair) => (
+                <div
+                  key={repair.TicketId}
+                  className="mb-3 last:mb-0 border-b border-neutral-200 pb-2"
+                >
+                  <p className="font-semibold text-neutral-900">{repair.deviceInfo}</p>
+                  <p className="text-sm text-neutral-700">
+                    Status updated to{' '}
+                    <span
+                      className={`capitalize font-medium ${
+                        repair.status === 'completed'
+                          ? 'text-green-600'
+                          : repair.status === 'In Progress'
+                          ? 'text-yellow-600'
+                          : 'text-blue-600'
+                      }`}
+                    >
+                      {repair.status}
+                    </span>
+                  </p>
+                  <p className="text-xs text-neutral-500 mt-1">
+                    {new Date(repair.updatedAt).toLocaleString()}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-neutral-600">No recent notifications</p>
+            )}
+          </div>
+        )}
+      </div>
+
       </div>
 
 

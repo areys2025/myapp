@@ -24,6 +24,8 @@ import UsedPartsForm from './components/UsedPartsForm'
 import ManageAdmins from './pages/ManageAdmins'
 import LogTable from './pages/LogTable'; 
 import Supplier from './pages/ManageSuppliersPage';
+import RepairHistoryPage from './pages/JobHistoryPage';
+import CustomerNotificationsPage from './pages/CustomerNotificationsPage';
 // Inside your <Routes>
 const App: React.FC = () => {
   const { user } = useAuth();
@@ -50,12 +52,14 @@ const App: React.FC = () => {
         {/* Customer Routes */}
         <Route path="/my-repairs" element={user && user.role === UserRole.CUSTOMER ? <MyRepairsPage key={user.id} /> : <Navigate to="/login" />} />
         <Route path="/request-repair" element={user && user.role === UserRole.CUSTOMER ? <RequestRepairPage /> : <Navigate to="/login" />} />
+        <Route path="/CustomerNotificationsPage" element={user && user.role === UserRole.CUSTOMER ? <CustomerNotificationsPage /> : <Navigate to="/login" />} />
 
         {/* Technician Routes */}
         <Route path="/assigned-tasks" element={user && user.role === UserRole.TECHNICIAN ? <AssignedTasksPage key={user.id} /> : <Navigate to="/login" />} />
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/assigned-tasks" element={user && user.role === UserRole.TECHNICIAN ? <AssignedTasksPage key={user.id} /> : <Navigate to="/login" />} />
         <Route path="/usedRep" element={user && user.role === UserRole.TECHNICIAN ? <UsedPartsForm key={user.id} inventoryItems={[]} /> : <Navigate to="/login" />} />
+        <Route path="/RepairHistoryPage" element={user && user.role === UserRole.TECHNICIAN ? <RepairHistoryPage /> : <Navigate to="/login" />} />
 
         {/* Manager Routes */}
         <Route path="/manage-repairs" element={user && user.role === UserRole.MANAGER ? <ManageRepairsPage key={user.id} /> : <Navigate to="/login" />} />
